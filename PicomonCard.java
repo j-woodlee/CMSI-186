@@ -38,8 +38,43 @@ public class PicomonCard {
     }
 
     public boolean beats(PicomonCard opponent) {
-        // Implement me!
-        return false;
+        // Implement me
+
+        if(this.element == opponent.element){
+            return this.power > opponent.power;
+        }
+
+        if(this.power == opponent.getPower() && this.element == opponent.getElement()){
+            return false;
+        }
+       
+        if ((this.element == PicomonElement.FIRE) && (opponent.getElement() == PicomonElement.AIR)) {
+            return this.power * 3 > opponent.getPower();
+        } else if(opponent.getElement() == PicomonElement.FIRE && this.element == PicomonElement.AIR){
+            return this.power > opponent.getPower() * 3;
+        }
+
+        if((this.element == PicomonElement.AIR) && ((opponent.getElement() == PicomonElement.WATER) || (opponent.getElement() == PicomonElement.EARTH))){
+            return this.power * 2 > opponent.getPower();
+        } else if(opponent.getElement() == PicomonElement.AIR && ((this.element == PicomonElement.WATER) || (this.element == PicomonElement.EARTH)) ){
+            return this.power > opponent.power * 2;
+        }
+
+        if((this.element == PicomonElement.WATER) && ((opponent.getElement() == PicomonElement.FIRE) || (opponent.getElement() == PicomonElement.EARTH))){       
+            return this.power * 2 > opponent.getPower();
+        } else if(opponent.element == PicomonElement.WATER && ((this.element == PicomonElement.FIRE) || (this.element == PicomonElement.EARTH))){
+            return this.power > opponent.getPower() * 2;
+        }
+
+        if((this.element == PicomonElement.EARTH) && (opponent.getElement() == PicomonElement.FIRE)){
+            return this.power * 4 > opponent.getPower();
+        }
+        else if(opponent.element == PicomonElement.EARTH && this.element == PicomonElement.FIRE){
+            return this.power > opponent.power * 4;
+        }
+
+        return this.power > opponent.power;
+
     }
 
     @Override
@@ -62,7 +97,7 @@ public class PicomonCard {
         }
 
         PicomonCard other = (PicomonCard)obj;
-        if ((element != other.element) || (power != other.power)) {
+        if ((this.element != other.element) || (this.power != other.power)) {
             return false;
         }
 
@@ -77,6 +112,25 @@ public class PicomonCard {
 
         return true;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Advanced Java---look away, look away!
     @Override
