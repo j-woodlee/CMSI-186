@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class PicomonDeck {
 
     private PicomonCard[] cards;
@@ -40,12 +39,40 @@ public class PicomonDeck {
 
     public void shuffle() {
         // Implement me!
+
+        PicomonCard[] result = new PicomonCard[cards.length];
+
+        
+
+        
     }
 
     public boolean orderedEquals(PicomonDeck other) {
         // Implement me!
-        return true;
+
+        boolean sameOrder = false;
+
+        int count = 0;
+
+        if(this.cards.length != other.cards.length){
+            return false;
+        }
+
+        for(int i = 0; i < this.cards.length; i++){
+            if(this.cards[i].equals(other.cards[i])){
+                count++;
+            }
+        }
+
+        if(count == this.cards.length){
+            sameOrder = true;
+        }
+        
+        return this.equals(other) && sameOrder;
+
     }
+
+
 
     @Override
     public String toString() {
