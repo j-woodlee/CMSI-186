@@ -40,10 +40,72 @@ public class PicomonDeck {
     public void shuffle() {
         // Implement me!
 
-        PicomonCard[] result = new PicomonCard[cards.length];
+        PicomonCard[] result = new PicomonCard[this.cards.length];
 
-        
+        if(this.cards.length % 2 == 0){
 
+            PicomonCard[] firstHalf = new PicomonCard[this.cards.length/2];
+            PicomonCard[] secondHalf = new PicomonCard[this.cards.length/2];
+
+            for(int i = 0; i < firstHalf.length; i++){
+                firstHalf[i] = this.cards[i];
+            }
+
+            int index = 0;
+            for(int i = firstHalf.length; i < cards.length; i++){
+                secondHalf[index] = this.cards[i];
+                index++;
+            }
+
+
+            index = 0;
+            for(int i = 0; i < cards.length; i+=2){
+                result[i] = firstHalf[index];
+                index++;
+            }
+
+            index = 0;
+
+            for(int i = 1; i < cards.length; i+=2){
+                result[i] = secondHalf[index];
+                index++;
+            }
+
+        }
+
+
+        else{
+
+            PicomonCard[] firstHalf = new PicomonCard[(this.cards.length/2) + 1];//first half is longer if odd
+            PicomonCard[] secondHalf = new PicomonCard[this.cards.length/2];
+
+            for(int i = 0; i < firstHalf.length; i++){
+                firstHalf[i] = this.cards[i];
+            }
+
+            int index = 0;
+
+            for(int i = firstHalf.length; i < cards.length; i++){
+                secondHalf[index] = this.cards[i];
+                index++;
+            }
+
+
+            index = 0;
+            for(int i = 0; i < cards.length; i+=2){
+                result[i] = firstHalf[index];
+                index++;
+            }
+
+            index = 0;
+
+            for(int i = 1; i < cards.length;i+=2){
+                result[i] = secondHalf[index];
+                index++;
+            }
+        }
+
+        this.cards = result;
         
     }
 
