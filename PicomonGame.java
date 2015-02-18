@@ -67,28 +67,66 @@ public class PicomonGame {
     }
 
     public boolean isMatchOver() {
-        
-
-        return true;
+         return this.gymLeaderPosition >= this.gymLeaderDeck.getSize() || this.trainerPosition >= this.trainerDeck.getSize();
     }
     
     public Player getLeader() {
         // Implement me!
-        return Player.TRAINER;
+        if(this.gymLeaderPosition < this.trainerPosition){
+            return Player.GYM_LEADER;
+        } else if(this.trainerPosition < this.gymLeaderPosition){
+            return Player.TRAINER;
+        } 
+        return null;
     }
     
     public Round playRound() {
         // Implement me!
-        return null;
+        Round round = new Round(this.gymLeaderDeck.cardAt(gymLeaderPosition), this.trainerDeck.cardAt(trainerPosition));
+
+        if(round.gymLeaderCard.beats(round.trainerCard)){
+            round.winner = Player.GYM_LEADER;
+            this.trainerPosition++;
+            round.trainerCard = this.trainerDeck.cardAt(this.trainerPosition);
+        } else if(round.trainerCard.beats(round.gymLeaderCard)) {
+            round.winner = Player.TRAINER;
+            this.gymLeaderPosition++;
+            round.gymLeaderCard = this.gymLeaderDeck.cardAt(this.gymLeaderPosition);
+        } else {
+            round.winner = null;
+        }
+
+        return round;
     }
 
     public Round[] playMatch() {
         // Implement me!
-        return new Round[0];
+        Round[] rounds = new Round[this.trainerDeck.getSize() * 2];//rounds.length == maximum number of rounds that could be played
+
+        int index = 0;
+        while(!isMatchOver()){
+            rounds[index] = this.playRound();
+            index++;
+        }
+
+        return rounds;
     }
 
     public static void main(String[] args) {
         // Implement me!
+        try{
+            if(args.length == 0){
+
+            } else if(args.length > 0 && args.length % 2 == 0) {
+
+            } 
+
+        }
+        
+        catch(Exception e) {
+            System.out.println("Cannot create a deck based on the supplied arguments.");
+            return;
+        }
     }
 
 }
