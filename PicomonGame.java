@@ -87,13 +87,14 @@ public class PicomonGame {
         if(round.gymLeaderCard.beats(round.trainerCard)){
             round.winner = Player.GYM_LEADER;
             this.trainerPosition++;
-            round.trainerCard = this.trainerDeck.cardAt(this.trainerPosition);
+            
         } else if(round.trainerCard.beats(round.gymLeaderCard)) {
             round.winner = Player.TRAINER;
             this.gymLeaderPosition++;
-            round.gymLeaderCard = this.gymLeaderDeck.cardAt(this.gymLeaderPosition);
         } else {
             round.winner = null;
+            this.trainerPosition++;
+            this.gymLeaderPosition++;
         }
 
         return round;
@@ -115,12 +116,83 @@ public class PicomonGame {
     public static void main(String[] args) {
         // Implement me!
         try{
+
             if(args.length == 0){
+                //run random deck code
+                System.out.println("Creating random decks...");
+
+                PicomonDeck deck1 = new PicomonDeck();
+                PicomonDeck deck2 = new PicomonDeck();
+
+                System.out.println("Gym Leader's deck: " + deck1 + "\n\n" + "Trainer's deck: " + deck2);
+
+                PicomonGame game = new PicomonGame(deck1, deck2);
+
+                Round[] rounds = game.playMatch();
+
+                for(Round r: rounds){
+                    if(r == null){
+                        System.out.println("And the winner is: " + game.getLeader() + "!");
+                        break;
+                    }
+                    System.out.println(r);
+                }
+
 
             } else if(args.length > 0 && args.length % 2 == 0) {
+                //run whatever arguments they put in <element> <power>
+                System.out.println("Creating decks...");
 
-            } 
+                int[] powers = new int[args.length/2];
+                int index = 0;
 
+                for(int i = 1; i < args.length; i+=2){
+                    powers[index] = Integer.parseInt(args[i]);
+                    index++;
+                }
+
+                PicomonElement[] elements = new PicomonElement[args.length/2];
+                index = 0;
+                
+                for(int i = 0; i < args.length; i+=2){
+                    elements[index] = PicomonElement.valueOf(args[i].toUpperCase());
+                    index++;
+                }
+
+                PicomonCard[] deck = new PicomonCard[args.length/2];
+                for(int i = 0; i < deck.length; i++){
+                    deck[i] = new PicomonCard(elements[i], powers[i]);
+                }
+
+                PicomonDeck deck1 = new PicomonDeck(deck);
+                PicomonDeck deck2 = new PicomonDeck(deck);
+
+                int random = (int) (Math.random() * 100);//shuffle the decks a random number of times
+                for(int i = 0; i < random; i++){
+                    deck1.shuffle();
+                }
+                random = (int) (Math.random() * 100);
+                for(int i = 0; i < random; i++){
+                    deck2.shuffle();
+                }
+
+                System.out.println("Gym Leader's deck: " + deck1 + "\n\n" + "Trainer's deck: " + deck2);
+
+                PicomonGame game = new PicomonGame(deck1, deck2);
+
+                Round[] rounds = game.playMatch();
+
+                for(Round r: rounds){
+                    if(r == null){
+                        System.out.println("And the winner is: " + game.getLeader() + "!");
+                        break;
+                    }
+                    System.out.println(r);
+                }
+                
+            } else{
+                throw new Exception();
+            }
         }
         
         catch(Exception e) {
