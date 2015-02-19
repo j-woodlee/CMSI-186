@@ -112,26 +112,7 @@ public class PicomonCard {
 
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     // Advanced Java---look away, look away!
     @Override
     public int hashCode() {
