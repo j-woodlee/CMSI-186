@@ -3,10 +3,9 @@ public class VectorTestHarness {
 	static int attempts = 0;
 
 	public static void main(String[] args){
+		testConstructor();
 		testAdd();
 		testScale();
-		testX();
-		testY();
 	}
 
 	private static void displaySuccessIfTrue(boolean value) {//courtesy of Dondi
@@ -20,9 +19,49 @@ public class VectorTestHarness {
         displaySuccessIfTrue(false);
     }
 
+    public static void testConstructor(){
+    	System.out.println("Testing Vector's Constructor...");
+
+		Vector v = new Vector(1,2);
+		try {
+            displaySuccessIfTrue(v.x() == 1 && v.y() == 2);
+        } catch(Exception exc) {
+            displayFailure();
+        }
+
+        v = new Vector(2, 3);
+        try {
+            displaySuccessIfTrue(v.x() == 2 && v.y() == 3);
+        } catch(Exception exc) {
+            displayFailure();
+        }
+
+        v = new Vector(4,5);
+        try {
+            displaySuccessIfTrue(v.x() == 4 && v.y() == 5);
+        } catch(Exception exc) {
+            displayFailure();
+        }
+
+        v = new Vector(6,7);
+        try {
+            displaySuccessIfTrue(v.x() == 6 && v.y() == 7);
+        } catch(Exception exc) {
+            displayFailure();
+        }
+
+        v = new Vector(10,11);
+        try {
+            displaySuccessIfTrue(v.x() == 10 && v.y() == 11);
+        } catch(Exception exc) {
+            displayFailure();
+        }
+    }
+
 	public static void testAdd() {
 
-		System.out.println("Testing Vector's add Method...");
+		System.out.println("Testing Vector's add method...");
+
 		Vector v = new Vector(1,2);
 
 		try {
@@ -53,18 +92,26 @@ public class VectorTestHarness {
         catch(Exception exc){
         	displayFailure();
         }
-		
 	}
+
 	public static void testScale() {
+		System.out.println("Testing Vector's scale method...");
+
+		Vector v = new Vector(6,7);
+		try{
+        	 displaySuccessIfTrue(v.scale(3).equals(new Vector(18,21)));
+        }
+        catch(Exception exc){
+        	displayFailure();
+        }
+
+        v = new Vector(24,56);
+        try{
+        	 displaySuccessIfTrue(v.scale(2).equals(new Vector(24*2,56*2)));
+        }
+        catch(Exception exc){
+        	displayFailure();
+        }
 
 	}
-
-	public static void testX() {
-
-	}
-
-	public static void testY() {
-
-	}
-
 }
