@@ -1,8 +1,8 @@
 public class Vector {
 
     // Declare my instance variables!
-    double x;
-    double y;
+    private double x;
+    private double y;
 
     
     public Vector(double x, double y) {
@@ -13,22 +13,26 @@ public class Vector {
     
     public double x() {
         // Implement me!
-        return 21.9;
+        return x;
     }
     
     public double y() {
         // Implement me!
-        return 17.8;
+        return y;
     }
 
     public Vector add(Vector v) {
         // Implement me!
-        return new Vector(14.5, 17.8);
+       
+        return new Vector(this.x + v.x, this.y + v.y);
     }
 
     public Vector scale(double magnitude) {
         // Implement me!
-        return new Vector(13.6, 17.8);
+        return new Vector(this.x * magnitude, this.y * magnitude);
     }
 
+    public boolean equals(Vector v){
+        return this.x == v.x && this.y == v.y;
+    }
 }
