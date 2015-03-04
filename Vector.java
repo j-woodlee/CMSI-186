@@ -30,9 +30,15 @@ public class Vector {
     public Vector scale(double magnitude) {
         // Implement me!
         return new Vector(this.x * magnitude, this.y * magnitude);
+        
     }
 
     public boolean equals(Vector v){
         return this.x == v.x && this.y == v.y;
+    }
+    
+    @Override
+    public String toString(){
+        return "<" + this.x + ", " + this.y + ">";
     }
 }
