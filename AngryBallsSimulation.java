@@ -10,8 +10,8 @@ public class AngryBallsSimulation{
 
         
         double[] values = new double[args.length];
-        try{
-            for(int i = 0; i<args.length;i++){
+        try {
+            for(int i = 0; i<args.length;i++) {
                 values[i] = Double.parseDouble(args[i]);
             }
         } catch(NumberFormatException nfe) {
@@ -24,14 +24,14 @@ public class AngryBallsSimulation{
 
          double grain = args.length == 11 ? values[10] : 1;
 
-         //y-component of the position is <= 0 the ball hits the ground
+         //y-component of the position is <= 0 when the ball hits the ground
          Vector gravity = new Vector(0,-9.8);
          boolean collided = false;
          Vector redBallCollisionLocation = null;
          Vector blueBallCollisionLocation = null;
          double t = 0;
 
-         while (redBall.getLocation().y() > 0 && blueBall.getLocation().y() > 0) {
+         while (redBall.getLocation().y() > 0 || blueBall.getLocation().y() > 0) {
 
             redBall.move(grain);
             redBall.accelerate(gravity, grain);
@@ -39,7 +39,7 @@ public class AngryBallsSimulation{
             blueBall.accelerate(gravity, grain);
             t += grain;
 
-            if(redBall.isTouching(blueBall) && !collided){//Will not be satisfied once collied == true
+            if(redBall.isTouching(blueBall) && !collided) {//Will not be satisfied once collided == true
                 collided = true;
                 redBallCollisionLocation = new Vector(redBall.getLocation().x(),redBall.getLocation().y());
                 blueBallCollisionLocation = new Vector (blueBall.getLocation().x(), blueBall.getLocation().y());
@@ -50,14 +50,13 @@ public class AngryBallsSimulation{
 
          System.out.println("end");
          if (collided) {
-            System.out.println("The balls collided at timestamp " + t  + "with the "); 
-            System.out.println("red ball at ("+ redBallCollisionLocation.x() + ", " + redBallCollisionLocation.y()+ ")" +  "and the blue ball at");
+            System.out.println("The balls collided at timestamp " + t  + " with the "); 
+            System.out.println("red ball at ("+ redBallCollisionLocation.x() + ", " + redBallCollisionLocation.y()+ ") " +  "and the blue ball at");
             System.out.println("(" + blueBallCollisionLocation.x() + ", " + blueBallCollisionLocation.y() + ").");
          } else {
             System.out.println("The balls did not collide.");
          }
     }
-
 
     public static void displayUsage() {
         System.out.println("Usage: java AngryBallsSimulation <redradius> <red x> <red y> <red velocity x><red velocity y> <blue radius> <blue x> <blue y> <blue velocity x> <blue velocity y> [ <grain> ]");
