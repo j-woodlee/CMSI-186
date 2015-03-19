@@ -3,17 +3,15 @@ import java.math.BigInteger;
 public class BigInt {
     boolean[] bits;//true = 1, false = 0, binary representation
     String number;//decimal representation
-    byte sign;//-1, 0, 1
+    short sign;//-1, 0, 1
 
     public BigInt() {
-        this.bits = new boolean[] {false};
-        this.number = "0";
-        this.sign = 0;
+        this("0");
     }
 
-    public BigInt(String number) {
+    public BigInt(String number) {//remember to deal with edge cases
 
-        number = number.replaceAll("\\s+","");// replace all blank spaces with an empty string
+        number = number.replaceAll("\\s+","");// replace all blank spaces with an empty string, from http://stackoverflow.com/questions/13209866/java-replace-method-replacing-with-empty-character
         number = removeExtraZeroes(number);//remove unnecessary zeroes from the number(zeroes in the front)
 
         if (number.substring(0,1).equals("0")) {
@@ -46,18 +44,10 @@ public class BigInt {
         //System.out.println(divideByTwo("234242342342342342342343242342349879879079786876856567576475465463543543298989892849283984928394892834928349829384923849823498293"));
         //System.out.println(a.divide(new BigInteger("2")));
         System.out.println(divideByTwo("1"));
-        System.out.println(divideByTwo("2"));
-        System.out.println(divideByTwo("3"));
-        System.out.println(divideByTwo("4"));
-        System.out.println(divideByTwo("5"));
-        System.out.println(divideByTwo("6"));
-        System.out.println(divideByTwo("7"));
-        System.out.println(divideByTwo("8"));
-        System.out.println(divideByTwo("9"));
-        System.out.println(divideByTwo("10"));
-        System.out.println(divideByTwo("11"));
-        System.out.println(divideByTwo("16"));
-        System.out.println(divideByTwo("20"));
+        System.out.println(divideByTwo("2000000023492384072098371092834671234"));
+        System.out.println(new BigInteger("13083274982734987234").divide(new BigInteger("2")).toString());
+        System.out.println(BigInt.divideByTwo("13083274982734987234"));
+
 
 
     }
@@ -82,7 +72,7 @@ public class BigInt {
         boolean[] bits = new boolean[result.length()];
 
         for(int i = 0; i < bits.length; i++) {
-            if(result.substring(i, i + 1) == "1") {
+            if(result.substring(i, i + 1).equals("1")) {
                 bits[i] = true;
             } else {
                 bits[i] = false;
@@ -108,25 +98,71 @@ public class BigInt {
     }
 
     public static String divideByTwo(String nmbr) {
-        int[] num = new int[nmbr.length()];
-        for(int i = 0; i < num.length; i++){
-            num[i] = Integer.parseInt(nmbr.substring(i, i + 1));
-        }
-
-        int dividend = num[0];
-
         String result = "";
 
-        int i = 0;
-        while(i < num.length) {
-            if(dividend >= 2) {
-                result += (dividend / 2);
-                dividend = dividend - ((dividend / 2) * 2);
-                i++;
-            } else if(dividend < 2) {
-                dividend = dividend * 10 + num[i];
+        int i = nmbr.length();
+        String current = "";
+        String before = "";
+
+        while(true) {
+
+            current = nmbr.substring(i-1,i);
+            
+            if(i-1 == 0) {
+                if(current.equals("0") || current.equals("1")) {
+                    result += "0";
+                } else if(current.equals("2") || current.equals("3")) {
+                    result += "1";
+                } else if(current.equals("4") || current.equals("5")) {
+                    result += "2";
+                } else if(current.equals("6") || current.equals("7")) {
+                    result += "3";
+
+                } else if(current.equals("8") || current.equals("9")) {
+                    result += "4";
+                }
+                break;
             }
+
+            before = nmbr.substring(i - 2, i-1);
+
+            if(current.equals("0") || current.equals("1")){
+                if(Integer.parseInt(nmbr.substring(i - 2, i-1)) % 2 == 0) {
+                    result += "0";
+                } else {
+                    result += "5";
+                }
+            } else if(current.equals("2") || current.equals("3")) {
+                if(Integer.parseInt(nmbr.substring(i - 2, i-1) ) % 2 == 0) {
+                    result += "1";
+                } else {
+                    result += "6";
+                }
+            } else if(current.equals("4") || current.equals("5")) {
+                if(Integer.parseInt(nmbr.substring(i - 2, i-1))  % 2 == 0) {
+                    result += "2";
+                } else {
+                    result += "7";
+                }
+            } else if(current.equals("6") || current.equals("7")) {
+                if(Integer.parseInt(nmbr.substring(i - 2, i-1) ) % 2 == 0) {
+                    result += "3";
+                } else {
+                    result += "8";
+                }
+            } else if(current.equals("8") || current.equals("9")) {
+                if(Integer.parseInt(nmbr.substring(i - 2, i-1))  % 2 == 0) {
+                    result += "4";
+                } else {
+                    result += "9";
+                }
+            }
+
+            i--;
         }
+
+        result = new StringBuilder(result).reverse().toString();
+        result = removeExtraZeroes(result);
         return result;
     }
 
@@ -159,7 +195,7 @@ public class BigInt {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {//inspired by Dondi
         if (this == obj) {
             return true;
         }
