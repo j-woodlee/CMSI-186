@@ -43,10 +43,17 @@ public class BigInt {
         //System.out.println(b);
         //System.out.println(divideByTwo("234242342342342342342343242342349879879079786876856567576475465463543543298989892849283984928394892834928349829384923849823498293"));
         //System.out.println(a.divide(new BigInteger("2")));
-        System.out.println(divideByTwo("1"));
-        System.out.println(divideByTwo("2000000023492384072098371092834671234"));
-        System.out.println(new BigInteger("13083274982734987234").divide(new BigInteger("2")).toString());
-        System.out.println(BigInt.divideByTwo("13083274982734987234"));
+        //System.out.println(divideByTwo("1"));
+        //System.out.println(divideByTwo("2000000023492384072098371092834671234"));
+        //System.out.println(new BigInteger("13083274982734987234").divide(new BigInteger("2")).toString());
+        //System.out.println(BigInt.divideByTwo("13083274982734987234"));
+        boolean[] asdf = BigInt.decimalToBinary("23897"); 
+
+        for(boolean b: asdf) {
+            //System.out.println(b);
+            System.out.print( b ? 1 : 0);
+        }
+        //System.out.println(BigInt.decimalToBinary("23897"));
 
 
 
@@ -97,7 +104,7 @@ public class BigInt {
         return str;
     }
 
-    public static String divideByTwo(String nmbr) {
+    public static String divideByTwo(String nmbr) {//will change later, but works as is
         String result = "";
 
         int i = nmbr.length();
