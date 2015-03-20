@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 public class BigIntTestHarness {
 
     private static int attempts = 0;
@@ -12,6 +13,9 @@ public class BigIntTestHarness {
         test_toString();
         test_Equals();
         test_Addition();
+        test_DivideByTwo();
+        test_IsGreaterThan();
+        test_RemoveExtraZeroes();
         
         // You should implement:
         //   test_isGreaterThan
@@ -293,8 +297,142 @@ public class BigIntTestHarness {
     public static void test_DivideByTwo() {
         System.out.println("Testing DivideByTwo...");
 
-        
+        try {
+            displaySuccessIfTrue(new BigInteger("13083274982734987234").divide(new BigInteger("2")).toString().equals(BigInt.divideByTwo("13083274982734987234")));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInteger("0").divide(new BigInteger("2")).toString().equals(BigInt.divideByTwo("0")));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInteger("10").divide(new BigInteger("2")).toString().equals(BigInt.divideByTwo("10")));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
 
     }
 
+    private static void test_RemoveExtraZeroes() {
+        System.out.println("Testing removeExtraZeroes...");
+
+
+        String s1 = "123213";
+        String s2 = "0000123213";
+
+        s2 = BigInt.removeExtraZeroes(s2);
+        
+
+        try {
+            displaySuccessIfTrue(s1.equals(s2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s1 = "1";
+        s2 = "00000000000000000000000000000000001";
+
+        s1 = BigInt.removeExtraZeroes(s1);
+        s2 = BigInt.removeExtraZeroes(s2);
+
+        try {
+            displaySuccessIfTrue(s1.equals(s2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s1 = "00000000000000000000001";
+        s2 = "00000000000000000000000000000000001";
+        s1 = BigInt.removeExtraZeroes(s1);
+        s2 = BigInt.removeExtraZeroes(s2);
+        
+
+        try {
+            displaySuccessIfTrue(s1.equals(s2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s1 = "01";
+        s2 = "00000000000000000000000000000000001";
+        s1 = BigInt.removeExtraZeroes(s1);
+        s2 = BigInt.removeExtraZeroes(s2);
+
+        try {
+            displaySuccessIfTrue(s1.equals(s2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
+    private static void test_IsGreaterThan() {
+        System.out.println("Testing isGreaterThan...");
+
+        BigInt b1 = new BigInt("1");
+        BigInt b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(b1.isGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("12345");
+        b2 = new BigInt("12345");
+
+        try {
+            displaySuccessIfTrue(!b1.isGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("123455");
+        b2 = new BigInt("12345");
+
+        try {
+            displaySuccessIfTrue(b1.isGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("0000123");
+        b2 = new BigInt("99999999999");
+
+        try {
+            displaySuccessIfTrue(b2.isGreaterThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("0");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(!b1.isGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("12");
+        b2 = new BigInt("13");
+
+        try {
+            displaySuccessIfTrue(b2.isGreaterThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-123123");
+        b2 = new BigInt("3113413");
+
+        try {
+            displaySuccessIfTrue(b2.isGreaterThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
 }
