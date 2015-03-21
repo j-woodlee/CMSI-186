@@ -29,14 +29,8 @@ public class BigInt {
     }
 
     public static void main(String[] args) {
-        boolean[] bools = decimalToBinary("100000000000000000");
+        
 
-
-        //bools = decimalToBinary("100000000000000000");
-
-        for(boolean bool: bools) {
-            System.out.print(bool ? "1" : "0");
-        }
 
     }
 
@@ -157,6 +151,39 @@ public class BigInt {
 
     public static String doubleDecimalString(String s) {//adds a decimal number to itself
         String sum = "";
+        int partialSum = 0;
+
+        int currentDigit = Integer.parseInt(s.substring(s.length() - 1, s.length()));
+        partialSum = currentDigit + currentDigit;
+
+        int i = s.length() - 1;
+
+        int carriedVal = 0;
+        String strPartialSum = "";
+        int pSumC = 0;
+
+        while(i >= 0) {
+            currentDigit = Integer.parseInt(s.substring(i, i + 1));
+            partialSum = currentDigit + currentDigit;
+            pSumC = currentDigit + currentDigit;
+            if(partialSum < 10) {
+                partialSum += carriedVal;
+                sum += partialSum;
+                carriedVal = 0;
+            } else {
+                partialSum += carriedVal;
+                strPartialSum = Integer.toString(partialSum);
+                carriedVal = 1;
+                partialSum = Integer.parseInt(strPartialSum.substring(1,2));
+                sum += partialSum;
+            }
+
+            if (i == 0 && pSumC > 9) {
+                sum += "1";
+            }
+
+            i--;
+        }
 
 
 
@@ -254,7 +281,21 @@ public class BigInt {
 
         BigInt other = (BigInt)obj;
 
-        return true;
+        boolean signsEqual = this.sign == other.sign ? true : false;
+        boolean componentsEqual = false;
+
+        int count = 0;
+
+        if (this.bits.length == other.bits.length) {
+            for(int i = 0; i < this.bits.length; i++) {
+                if(this.bits[i] == other.bits[i]) {
+                    count++;
+                }
+            }
+            componentsEqual = count == this.bits.length ? true : false;
+        }
+
+        return signsEqual && componentsEqual;
     }
 
     @Override
