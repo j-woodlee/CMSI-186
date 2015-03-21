@@ -25,14 +25,11 @@ public class BigInt {
             this.sign = 1;
         }
 
-        //System.out.println("number: " + number);
-        //this.number = number;
-
         bits = BigInt.decimalToBinary(number);
     }
 
     public static void main(String[] args) {
-        System.out.println("args[0]: " + args[0]);
+        //System.out.println("args[0]: " + args[0]);
        // BigInt b = new BigInt(args[0]);
         //System.out.println(b.bits);
         //System.out.println(b.sign);
@@ -46,11 +43,20 @@ public class BigInt {
         //System.out.println(divideByTwo("2000000023492384072098371092834671234"));
         //System.out.println(new BigInteger("13083274982734987234").divide(new BigInteger("2")).toString());
         //System.out.println(BigInt.divideByTwo("13083274982734987234"));
-        boolean[] asdf = BigInt.decimalToBinary("23897"); 
+        boolean[] asdf = BigInt.decimalToBinary("23897");
 
         for(boolean b: asdf) {
             //System.out.println(b);
-            System.out.print( b ? 1 : 0);
+            System.out.print(b ? 1 : 0);
+        }
+
+        System.out.println();
+
+        asdf = BigInt.decimalToBinary("1381721234936192873");
+
+        for(boolean b: asdf) {
+            //System.out.println(b);
+            System.out.print(b ? 1 : 0);
         }
         //System.out.println(BigInt.decimalToBinary("23897"));
 
@@ -61,15 +67,15 @@ public class BigInt {
     public static boolean[] decimalToBinary(String decNum) {
 
         String result = "";
+        int lastDigit = Integer.parseInt(decNum.substring(decNum.length() - 1, decNum.length()));
         
-        while(Integer.parseInt(decNum.substring(decNum.length() - 1, decNum.length())) > 0) {
-
-            if(Integer.parseInt(decNum.substring(decNum.length() - 1, decNum.length())) % 2 == 0) {
+        while(!decNum.equals("0")) {
+            lastDigit = Integer.parseInt(decNum.substring(decNum.length() - 1, decNum.length()));
+            if(lastDigit % 2 == 0) {
                 result += "0";
             } else {
-                result += "1";
+                result += "1";           
             }
-
             decNum = divideByTwo(decNum);
         }
 
@@ -91,7 +97,7 @@ public class BigInt {
     public static String removeExtraZeroes(String str) {
         boolean isNegative = false;
         while ((str.substring(0,1).equals("0") || str.substring(0,1).equals("-")) && str.length() > 1) {//replace insignificant zeroes with an empty string
-           if(str.substring(0,1).equals("-")){
+           if(str.substring(0,1).equals("-")) {
                isNegative = true;
            }
            str = str.substring(1, str.length());
@@ -175,17 +181,9 @@ public class BigInt {
     public static String doubleDecimalString(String s) {//adds a decimal number to itself
         String sum = "";
 
-        int partialSum = 0;
-        int index = s.length() - 1;
-        while(index >= 0) {
-            partialSum = Integer.parseInt(s.substring(index,index+1)) + Integer.parseInt(s.substring(index,index+1));
-            if(partialSum < 10) {
-                sum += partialSum;
-            } else {
-                return "";
-            }
-            index--;
-        }
+
+
+        sum = new StringBuilder(sum).reverse().toString();
         return sum;
 
     }
