@@ -2,7 +2,6 @@ import java.math.BigInteger;
 
 public class BigInt {
     boolean[] bits;//true = 1, false = 0, binary representation
-    String number;//decimal representation
     short sign;//-1, 0, 1
 
     public BigInt() {
@@ -27,7 +26,7 @@ public class BigInt {
         }
 
         //System.out.println("number: " + number);
-        this.number = number;
+        //this.number = number;
 
         bits = BigInt.decimalToBinary(number);
     }
@@ -104,7 +103,7 @@ public class BigInt {
         return str;
     }
 
-    public static String divideByTwo(String nmbr) {//will change later, but works as is
+    public static String divideByTwo(String nmbr) {//will change later for less code, but works as is
         String result = "";
 
         int i = nmbr.length();
@@ -173,12 +172,75 @@ public class BigInt {
         return result;
     }
 
-    public boolean isGreaterThan(BigInt b) {
-        throw new UnsupportedOperationException();
+    public static String doubleDecimalString(String s) {//adds a decimal number to itself
+        String sum = "";
+
+        int partialSum = 0;
+        int index = s.length() - 1;
+        while(index >= 0) {
+            partialSum = Integer.parseInt(s.substring(index,index+1)) + Integer.parseInt(s.substring(index,index+1));
+            if(partialSum < 10) {
+                sum += partialSum;
+            } else {
+                return "";
+            }
+            index--;
+        }
+        return sum;
+
     }
 
-    public boolean isLessThan(BigInt b) {
-        throw new UnsupportedOperationException();
+    public static String addOne(String s) {//adds one to a positive decimal number
+        int lastDigit = Integer.parseInt(s.substring(s.length() - 1, s.length()));
+
+        if(lastDigit != 9) {
+            lastDigit++;
+            s = s.substring(0, s.length() - 1) + lastDigit;
+        } else {
+            int count = s.length();
+            for(int i = s.length()-1; i >= 0; i--) {
+                if(s.substring(i,i+1).equals("9")) {
+                    count--;//by the end of this loop count is the index of the nine furthest in from the right, example: in 34999 count would be 2 at the end of the loop 1999999
+                }
+            }//s.length() - count  is the number of 9's
+
+            String endZeroes = "";
+
+            for(int i = 0; i < (s.length() - count); i++) {
+                endZeroes += "0";
+            }
+
+            if(count == 0) {//count == 0 means that the number is constructed of all 9's
+                s = "1" + endZeroes;
+            } else {
+                int plusOneDigit = Integer.parseInt(s.substring(count-1, count));
+
+                plusOneDigit++;
+
+                s = s.substring(0, count-1) + plusOneDigit + endZeroes;
+            }
+
+           }
+           return s;
+    }
+
+    public boolean isGreaterThan(BigInt n) {//test for signs
+        if(this.bits.length > n.bits.length) {
+            return true;
+        } else if (this.bits.length < n.bits.length) {
+            return false;
+        }
+
+        return false;
+    }
+
+    public boolean isLessThan(BigInt n) {
+        if(this.bits.length < n.bits.length) {
+            return true;
+        } else if (this.bits.length > n.bits.length) {
+            return false;
+        }
+        return false;
     }
 
     public BigInt minus(BigInt subtrahend) {
@@ -217,17 +279,12 @@ public class BigInt {
 
         BigInt other = (BigInt)obj;
 
-        return this.number.equals(other.number) && this.sign == other.sign;
+        return true;
     }
 
     @Override
-    public String toString(){
-        if(sign == 1){
-            return "+" + number;
-        } else if (sign == -1) {
-            return "-" + number;
-        } else {
-            return number;
-        }
+    public String toString() {
+        return "";
+
     }
 }
