@@ -29,38 +29,14 @@ public class BigInt {
     }
 
     public static void main(String[] args) {
-        //System.out.println("args[0]: " + args[0]);
-       // BigInt b = new BigInt(args[0]);
-        //System.out.println(b.bits);
-        //System.out.println(b.sign);
+        boolean[] bools = decimalToBinary("100000000000000000");
 
-        //BigInteger a = new BigInteger("234242342342342342342343242342349879879079786876856567576475465463543543298989892849283984928394892834928349829384923849823498293");
-        
-        //System.out.println(b);
-        //System.out.println(divideByTwo("234242342342342342342343242342349879879079786876856567576475465463543543298989892849283984928394892834928349829384923849823498293"));
-        //System.out.println(a.divide(new BigInteger("2")));
-        //System.out.println(divideByTwo("1"));
-        //System.out.println(divideByTwo("2000000023492384072098371092834671234"));
-        //System.out.println(new BigInteger("13083274982734987234").divide(new BigInteger("2")).toString());
-        //System.out.println(BigInt.divideByTwo("13083274982734987234"));
-        boolean[] asdf = BigInt.decimalToBinary("23897");
 
-        for(boolean b: asdf) {
-            //System.out.println(b);
-            System.out.print(b ? 1 : 0);
+        //bools = decimalToBinary("100000000000000000");
+
+        for(boolean bool: bools) {
+            System.out.print(bool ? "1" : "0");
         }
-
-        System.out.println();
-
-        asdf = BigInt.decimalToBinary("1381721234936192873");
-
-        for(boolean b: asdf) {
-            //System.out.println(b);
-            System.out.print(b ? 1 : 0);
-        }
-        //System.out.println(BigInt.decimalToBinary("23897"));
-
-
 
     }
 
@@ -68,16 +44,17 @@ public class BigInt {
 
         String result = "";
         int lastDigit = Integer.parseInt(decNum.substring(decNum.length() - 1, decNum.length()));
-        
-        while(!decNum.equals("0")) {
+
+        do {
             lastDigit = Integer.parseInt(decNum.substring(decNum.length() - 1, decNum.length()));
             if(lastDigit % 2 == 0) {
                 result += "0";
             } else {
                 result += "1";           
             }
+            
             decNum = divideByTwo(decNum);
-        }
+        } while(!decNum.equals("0"));
 
         result = new StringBuilder(result).reverse().toString();
 
