@@ -16,6 +16,9 @@ public class BigIntTestHarness {
         test_DivideByTwo();
         test_IsGreaterThan();
         test_RemoveExtraZeroes();
+        test_DecimalToBinary();
+        test_AddOne();
+        test_DoubleDecimalString();
         
         // You should implement:
         //   test_isGreaterThan
@@ -325,8 +328,7 @@ public class BigIntTestHarness {
         String s2 = "0000123213";
 
         s2 = BigInt.removeExtraZeroes(s2);
-        
-
+    
         try {
             displaySuccessIfTrue(s1.equals(s2));
         } catch(Exception e) {
@@ -335,7 +337,6 @@ public class BigIntTestHarness {
 
         s1 = "1";
         s2 = "00000000000000000000000000000000001";
-
         s1 = BigInt.removeExtraZeroes(s1);
         s2 = BigInt.removeExtraZeroes(s2);
 
@@ -368,6 +369,172 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
     }
+
+    private static void test_DecimalToBinary() {
+        System.out.println("Testing decimalToBinary...");
+
+        String s = "123947812938471234";
+
+        System.out.println(BigInt.decimalToBinary(s));
+
+        try {
+            displaySuccessIfTrue(BigInt.decimalToBinary(s).equals("111011000110100101100100100"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
+    private static void test_AddOne() {
+        System.out.println("Testing addOne...");
+
+        String s = "123456789";
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("123456790"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "0";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("1"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "9";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("10"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "10";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("11"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "19";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("20"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "999";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("1000"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "6875764857865876578658";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("6875764857865876578659"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "69999999999";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("70000000000"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "1";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("2"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+    }
+
+    private static void test_DoubleDecimalString() {
+        System.out.println("Testing doubleDecimalString...");
+
+        String s = "1";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("2"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "10000";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("20000"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "1";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("2"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "99";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("198"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+       
+        BigInteger b = new BigInteger("29384709182734098123740981234");
+        System.out.println(b.multiply(new BigInteger("2")));
+        s = "29384709182734098123740981234";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("58769418365468196247481962468"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b = new BigInteger("12938461230412341234123412341234");
+        System.out.println(b.multiply(new BigInteger("2")));
+
+        s = "12938461230412341234123412341234";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("25876922460824682468246824682468"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "0";
+        
+        try {
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals(0));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
 
     private static void test_IsGreaterThan() {
         System.out.println("Testing isGreaterThan...");
