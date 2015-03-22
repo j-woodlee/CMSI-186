@@ -29,8 +29,9 @@ public class BigInt {
     }
 
     public static void main(String[] args) {
-        
+        System.out.println(binaryToDecimal(new boolean[] {true, false, true, false}));
 
+        System.out.println(binaryToDecimal(new boolean[] {true, false, true, false, true, false, true, false, true, false, true, false}));
 
     }
 
@@ -185,11 +186,8 @@ public class BigInt {
             i--;
         }
 
-
-
         sum = new StringBuilder(sum).reverse().toString();
         return sum;
-
     }
 
     public static String addOne(String s) {//adds one to a positive decimal number
@@ -226,23 +224,59 @@ public class BigInt {
            return s;
     }
 
+    public static String binaryToDecimal(boolean[] binary) {
+        
+        String number = "0";
+
+        int i = 0;
+        while(i < binary.length) {
+
+            number = doubleDecimalString(number);
+            if (binary[i]) {//if the left bit is 1
+                number = addOne(number);
+            }
+
+            i++;
+        }
+        return number;
+
+    }
+
     public boolean isGreaterThan(BigInt n) {//test for signs
-        if(this.bits.length > n.bits.length) {
+        
+        if(this.sign == 1 && (n.sign == -1 || n.sign == 0)) {
             return true;
-        } else if (this.bits.length < n.bits.length) {
+        } else if(n.sign == 1 && (this.sign == -1 || this.sign == 0)) {
             return false;
+        }//we now know the signs are equal
+
+        boolean absValGreater = false;
+
+        if(this.bits.length > n.bits.length) {
+            absValGreater = true;
+        } else if (this.bits.length < n.bits.length) {
+            absValGreater = false;
+        } else {//n.bits.length == this.bits.length
+            int count = 0;
+            for(int i = 0; i < this.bits.length; i++) {
+                if(this.bits[i] && !n.bits[i]) {
+                    absValGreater = true;
+                    break;
+                } else if(!this.bits[i] && n.bits[i]) {
+                    break;
+                }
+                count = this.bits[i] == n.bits[i] ? count + 1 : count;
+            }
+            if (count == this.bits.length) {//they are equal
+                return false;
+            }
         }
 
-        return false;
+        return this.sign == 1 ? absValGreater : !absValGreater; //this.sign == 1 implies n.sign == 1
     }
 
     public boolean isLessThan(BigInt n) {
-        if(this.bits.length < n.bits.length) {
-            return true;
-        } else if (this.bits.length > n.bits.length) {
-            return false;
-        }
-        return false;
+        return !this.isGreaterThan(n) && !this.equals(n);
     }
 
     public BigInt minus(BigInt subtrahend) {
@@ -299,8 +333,13 @@ public class BigInt {
     }
 
     @Override
-    public String toString() {
-        return "";
+    public String toString() {//does not account for sign yet
+
+        if(sign == 0) {
+            return "0";
+        }
+
+        return sign == 1 ? "+" + binaryToDecimal(this.bits) : "-" + binaryToDecimal(this.bits);
 
     }
 }
