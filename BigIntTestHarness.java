@@ -15,10 +15,12 @@ public class BigIntTestHarness {
         test_Addition();
         test_DivideByTwo();
         test_IsGreaterThan();
+        test_IsLessThan();
         test_RemoveExtraZeroes();
         test_DecimalToBinary();
         test_AddOne();
         test_DoubleDecimalString();
+        test_binaryToDecimal();
         
         // You should implement:
         //   test_isGreaterThan
@@ -373,12 +375,74 @@ public class BigIntTestHarness {
     private static void test_DecimalToBinary() {
         System.out.println("Testing decimalToBinary...");
 
-        String s = "123947812938471234";
-
-        System.out.println(BigInt.decimalToBinary(s));
+        boolean[] bools = BigInt.decimalToBinary("123947812938471234");
+        String s1 = "";
+        for(boolean bool: bools) {
+            s1 = s1 + (bool ? "1": "0");
+        }
 
         try {
-            displaySuccessIfTrue(BigInt.decimalToBinary(s).equals("111011000110100101100100100"));
+            displaySuccessIfTrue(s1.equals("110111000010110011110000100010000111000100101011101000010"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        bools = BigInt.decimalToBinary("0");
+        s1 = "";
+        for(boolean bool: bools) {
+            s1 = s1 + (bool ? "1": "0");
+        }
+
+        try {
+            displaySuccessIfTrue(s1.equals("0"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        bools = BigInt.decimalToBinary("10");
+        s1 = "";
+        for(boolean bool: bools) {
+            s1 = s1 + (bool ? "1": "0");
+        }
+
+        try {
+            displaySuccessIfTrue(s1.equals("1010"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        bools = BigInt.decimalToBinary("10000000000000");
+        s1 = "";
+        for(boolean bool: bools) {
+            s1 = s1 + (bool ? "1": "0");
+        }
+
+        try {
+            displaySuccessIfTrue(s1.equals("10010001100001001110011100101010000000000000"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        bools = BigInt.decimalToBinary("10002346128734691234");
+        s1 = "";
+        for(boolean bool: bools) {
+            s1 = s1 + (bool ? "1": "0");
+        }
+
+        try {
+            displaySuccessIfTrue(s1.equals("1000101011001111011110001100111100110011101111000001111110100010"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        bools = BigInt.decimalToBinary("9");
+        s1 = "";
+        for(boolean bool: bools) {
+            s1 = s1 + (bool ? "1": "0");
+        }
+
+        try {
+            displaySuccessIfTrue(s1.equals("1001"));
         } catch(Exception e) {
             displaySuccessIfTrue(false);
         }
@@ -506,7 +570,7 @@ public class BigIntTestHarness {
 
        
         BigInteger b = new BigInteger("29384709182734098123740981234");
-        System.out.println(b.multiply(new BigInteger("2")));
+        
         s = "29384709182734098123740981234";
         
         try {
@@ -516,7 +580,7 @@ public class BigIntTestHarness {
         }
 
         b = new BigInteger("12938461230412341234123412341234");
-        System.out.println(b.multiply(new BigInteger("2")));
+        
 
         s = "12938461230412341234123412341234";
         
@@ -529,7 +593,71 @@ public class BigIntTestHarness {
         s = "0";
         
         try {
-            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals(0));
+            displaySuccessIfTrue(BigInt.doubleDecimalString(s).equals("0"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
+    private static void test_binaryToDecimal() {
+        System.out.println("Testing binaryToDecimal...");
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, false, true, false}).equals("10"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, false, true, false, true, false}).equals("42"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, true, true, false}).equals("14"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, true, true, true}).equals("15"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true}).equals("1"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {false}).equals("0"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, true}).equals("3"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {false, false}).equals("0"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, true, true, true, true, true, false}).equals("126"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(BigInt.binaryToDecimal(new boolean[] {true, true, true, true, true, true, true, true, false}).equals("510"));
         } catch(Exception e) {
             displaySuccessIfTrue(false);
         }
@@ -601,5 +729,127 @@ public class BigIntTestHarness {
         } catch(Exception e) {
             displaySuccessIfTrue(false);
         }
+
+        b1 = new BigInt("-123123");
+        b2 = new BigInt("-3113413");
+
+        try {
+            displaySuccessIfTrue(b1.isGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(b2.isGreaterThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(!b1.isGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
     }
+
+    private static void test_IsLessThan() {
+        System.out.println("Testing isLessThan...");
+
+        BigInt b1 = new BigInt("1");
+        BigInt b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(b2.isLessThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("12345");
+        b2 = new BigInt("12345");
+
+        try {
+            displaySuccessIfTrue(!b2.isLessThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("123455");
+        b2 = new BigInt("12345");
+
+        try {
+            displaySuccessIfTrue(b2.isLessThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("0000123");
+        b2 = new BigInt("99999999999");
+
+        try {
+            displaySuccessIfTrue(b1.isLessThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("0");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(!b2.isLessThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("12");
+        b2 = new BigInt("13");
+
+        try {
+            displaySuccessIfTrue(b1.isLessThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-123123");
+        b2 = new BigInt("3113413");
+
+        try {
+            displaySuccessIfTrue(b1.isLessThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-123123");
+        b2 = new BigInt("-3113413");
+
+        try {
+            displaySuccessIfTrue(b2.isLessThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(!b2.isLessThan(b1));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(b1.isLessThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
 }
