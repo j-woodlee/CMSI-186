@@ -28,13 +28,6 @@ public class BigInt {
         bits = BigInt.decimalToBinary(number);
     }
 
-    public static void main(String[] args) {
-        System.out.println(binaryToDecimal(new boolean[] {true, false, true, false}));
-
-        System.out.println(binaryToDecimal(new boolean[] {true, false, true, false, true, false, true, false, true, false, true, false}));
-
-    }
-
     public static boolean[] decimalToBinary(String decNum) {
 
         String result = "";
@@ -230,16 +223,13 @@ public class BigInt {
 
         int i = 0;
         while(i < binary.length) {
-
             number = doubleDecimalString(number);
             if (binary[i]) {//if the left bit is 1
                 number = addOne(number);
             }
-
             i++;
         }
         return number;
-
     }
 
     public boolean isGreaterThan(BigInt n) {//test for signs
@@ -272,18 +262,81 @@ public class BigInt {
             }
         }
 
-        return this.sign == 1 ? absValGreater : !absValGreater; //this.sign == 1 implies n.sign == 1
+        return this.sign == 1 ? absValGreater : !absValGreater; //this.sign == 1 implies n.sign == 1, also this.sign == -1 implies n.sign == -1
     }
 
     public boolean isLessThan(BigInt n) {
         return !this.isGreaterThan(n) && !this.equals(n);
     }
 
-    public BigInt minus(BigInt subtrahend) {
-        throw new UnsupportedOperationException();
+    public static void main(String[] args) {
+        BigInt b = new BigInt("1296");
+        b.plus(new BigInt("2343"));
+        System.out.println("10100010000");
+        System.out.println("100100100111");
     }
 
     public BigInt plus(BigInt addend) {
+        boolean[] carries;//carries element indexed at length-1 is always zero, or false 
+        boolean[] addend1;//this.bits
+        boolean[] addend2;//addend.bits
+        BigInt sum = new BigInt();
+
+        //fills the three arrays that we will be combining with the proper sizes and elements
+        if(this.bits.length > addend.bits.length) {//addend.bits has extra zeroes in front
+            carries = new boolean[this.bits.length + 1];
+            addend1 = new boolean[this.bits.length];
+            addend2 = new boolean[this.bits.length];
+            for(int i = 0; i < this.bits.length; i++) {
+                addend1[i] = this.bits[i];
+            }
+            for(int i = 0; i < addend.bits.length; i++) {
+                addend2[i + (this.bits.length - addend.bits.length)] = addend.bits[i];
+            }
+        } else if(addend.bits.length > this.bits.length) {//this.bits has extra zeroes in front
+            carries = new boolean[addend.bits.length + 1];
+            addend1 = new boolean[addend.bits.length];
+            addend2 = new boolean[addend.bits.length];
+            for(int i = 0; i < addend.bits.length; i++) {
+                addend2[i] = addend.bits[i];
+            }
+            for(int i = 0; i < this.bits.length; i++) {
+                addend1[i + (addend.bits.length - this.bits.length)] = this.bits[i];
+            }
+        } else {
+            carries = new boolean[this.bits.length + 1];
+            addend1 = new boolean[this.bits.length];
+            addend2 = new boolean[this.bits.length];
+            for(int i = 0; i < this.bits.length; i++) {
+                addend1[i] = this.bits[i];
+            }
+            for(int i = 0; i < this.bits.length; i++) {
+                addend2[i] = addend.bits[i];
+            }
+        }
+
+        for(int i = 0; i < addend1.length; i++) {
+            System.out.println("addend1: " + addend1[i]);
+        }
+
+        for(int i = 0; i < addend1.length; i++) {
+            System.out.println("addend2: " + addend2[i]);
+        }
+
+        for(int i = 0; i < addend1.length + 1; i++) {
+            System.out.println("carries: " + carries[i]);
+        }
+
+        if((this.sign == addend.sign) || (this.sign == 0 && addend.sign == 1) || (addend.sign == 0 && this.sign == 1)) {//if both signs are zero, if both signs are positive, or if one of the signs is zero and the other ispositive
+            //add algorithm
+        } else {// if one of the signs is negative and one of them is positive
+            //subtract algorithm
+        }
+
+        return sum;
+    }
+
+    public BigInt minus(BigInt subtrahend) {
         throw new UnsupportedOperationException();
     }
 
@@ -334,11 +387,9 @@ public class BigInt {
 
     @Override
     public String toString() {//does not account for sign yet
-
         if(sign == 0) {
             return "0";
         }
-
         return sign == 1 ? "+" + binaryToDecimal(this.bits) : "-" + binaryToDecimal(this.bits);
 
     }
