@@ -271,73 +271,99 @@ public class BigInt {
 
     public static void main(String[] args) {
         BigInt b = new BigInt("1296");
-        b.plus(new BigInt("2343"));
+        System.out.println(b.plus(new BigInt("2343")));
         System.out.println("10100010000");
         System.out.println("100100100111");
     }
 
     public BigInt plus(BigInt addend) {
-        boolean[] carries;//carries element indexed at length-1 is always zero, or false 
-        boolean[] addend1;//this.bits
-        boolean[] addend2;//addend.bits
+        if(this.bits.length < addend.bits.length) {
+            return addend.plus(this);
+        }
+
         BigInt sum = new BigInt();
+        sum.bits = new boolean[this.bits.length + 1];
 
-        //fills the three arrays that we will be combining with the proper sizes and elements
-        if(this.bits.length > addend.bits.length) {//addend.bits has extra zeroes in front
-            carries = new boolean[this.bits.length + 1];
-            addend1 = new boolean[this.bits.length];
-            addend2 = new boolean[this.bits.length];
-            for(int i = 0; i < this.bits.length; i++) {
-                addend1[i] = this.bits[i];
-            }
-            for(int i = 0; i < addend.bits.length; i++) {
-                addend2[i + (this.bits.length - addend.bits.length)] = addend.bits[i];
-            }
-        } else if(addend.bits.length > this.bits.length) {//this.bits has extra zeroes in front
-            carries = new boolean[addend.bits.length + 1];
-            addend1 = new boolean[addend.bits.length];
-            addend2 = new boolean[addend.bits.length];
-            for(int i = 0; i < addend.bits.length; i++) {
-                addend2[i] = addend.bits[i];
-            }
-            for(int i = 0; i < this.bits.length; i++) {
-                addend1[i + (addend.bits.length - this.bits.length)] = this.bits[i];
-            }
-        } else {
-            carries = new boolean[this.bits.length + 1];
-            addend1 = new boolean[this.bits.length];
-            addend2 = new boolean[this.bits.length];
-            for(int i = 0; i < this.bits.length; i++) {
-                addend1[i] = this.bits[i];
-            }
-            for(int i = 0; i < this.bits.length; i++) {
-                addend2[i] = addend.bits[i];
-            }
+        boolean[] addendBits = new boolean[this.bits.length];
+
+        for(int i = 0; i < addend.bits.length; i++) {
+            addendBits[(this.bits.length - addend.bits.length) + i] = addend.bits[i];
         }
+        addend.bits = addendBits;
 
-        for(int i = 0; i < addend1.length; i++) {
-            System.out.println("addend1: " + addend1[i]);
-        }
-
-        for(int i = 0; i < addend1.length; i++) {
-            System.out.println("addend2: " + addend2[i]);
-        }
-
-        for(int i = 0; i < addend1.length + 1; i++) {
-            System.out.println("carries: " + carries[i]);
-        }
-
+        
         if((this.sign == addend.sign) || (this.sign == 0 && addend.sign == 1) || (addend.sign == 0 && this.sign == 1)) {//if both signs are zero, if both signs are positive, or if one of the signs is zero and the other ispositive
             //add algorithm
+            boolean carry = false;
+            for(int i = this.bits.length - 1; i >= 0; i--) {
+                if(!this.bits[i] && !addend.bits[i]) {// 0 and 0
+                    sum.bits[i + 1] = carry ? true : false;
+                    carry = false;
+                } else if(this.bits[i] != addend.bits[i]) {//0 and 1
+                    sum.bits[i + 1] = carry ? false : true;
+                } else {//1 and 1
+                     sum.bits[i + 1] = carry ? true : false;
+                     carry = true;
+                }
+            }
+
+            if(this.sign == -1) {
+                sum.sign = -1;
+            } else if(this.sign == 0 && addend.sign == 0) {
+                sum.sign = 0;
+            } else {
+                sum.sign = 1;
+            }
+
+            if(carry) {
+                sum.bits[0] = true;
+            } else {
+                boolean[] newSum = new boolean[sum.bits.length - 1];
+                for(int i = 0; i < newSum.length; i++) {
+                    newSum[i] = sum.bits[i + 1];
+                }
+                sum.bits = newSum;
+            }
+
         } else {// if one of the signs is negative and one of them is positive
-            //subtract algorithm
+            //subtract algorithm, this - addend
+            sum.bits = new boolean[this.bits.length];
+            boolean borrowFrom1 = false;
+            boolean borrowFrom0 = false;
+
+            
+            if(this.isGreaterThan(addend)) {
+                sum.sign = 1;
+                for(int i = this.bits.length - 1; i >= 0; i--) {
+                    for(int j = this.bits.length - 1; j >= 0; j--) {
+                        if(!this.bits[i] && !addend.bits[i]) {// 0 and 0
+                            
+                        } else if(this.bits[i] && !addend.bits[i]) {//1 and 0
+                            
+                        } else if(!this.bits[i] && addend.bits[i]) {//0 and 1
+                            
+                        } else if(this.bits[i] && addend.bits[i]) {//1 and 1
+                            
+                        }
+
+                    }
+                    
+                }
+            } else if (addend.isGreaterThan(this)) {
+                sum.sign = -1;
+
+            } else {
+                sum.sign = 0;
+                return new BigInt();
+            }
         }
 
         return sum;
     }
 
     public BigInt minus(BigInt subtrahend) {
-        throw new UnsupportedOperationException();
+        subtrahend.sign *= -1;
+        return this.plus(subtrahend);
     }
 
     public BigInt div(BigInt divisor) {
@@ -348,8 +374,45 @@ public class BigInt {
         throw new UnsupportedOperationException();
     }
 
-    public BigInt times(BigInt factor) {
-        throw new UnsupportedOperationException();
+    public BigInt times(BigInt factor) {//precondition: this.bits[0] and factor.bits[0] is always true
+        BigInt product = new BigInt();
+        if(this.sign == 0 || factor.sign == 0) {
+            return product;
+        } 
+        boolean[][] column1 = new boolean[this.bits.length][];
+        boolean[][] column2 = new boolean[this.bits.length][];
+
+        
+        int factorLength = factor.bits.length;
+        int thisLength = this.bits.length;
+        for(int i = 0; i < this.bits.length; i++) {
+            column2[i] = new boolean[factorLength];
+            column1[i] = new boolean[thisLength];
+
+            for(int j = 0; j < factor.bits.length; j++) {
+                column2[i][j] = factor.bits[j];
+            }
+
+            for(int j = 0; j < thisLength; j++) {
+                column2[i][j] = this.bits[j];
+            }
+
+            factorLength++;
+            thisLength--;
+        }
+
+        for(int i = 0; i < this.bits.length; i++) {
+            if(!column1[i][column1[i].length - 1]) {//number is even if last element is false
+                product = product.plus(new BigInt(binaryToDecimal(column1[i])).plus(new BigInt(binaryToDecimal(column2[i]))));
+            }
+        }
+
+        if(this.sign == factor.sign) {
+            product.sign = 1;
+            return product;
+        }
+        product.sign = -1;
+        return product;
     }
 
     @Override
@@ -368,18 +431,20 @@ public class BigInt {
 
         BigInt other = (BigInt)obj;
 
-        boolean signsEqual = this.sign == other.sign ? true : false;
+        boolean signsEqual = this.sign == other.sign;
         boolean componentsEqual = false;
 
         int count = 0;
 
+
         if (this.bits.length == other.bits.length) {
             for(int i = 0; i < this.bits.length; i++) {
                 if(this.bits[i] == other.bits[i]) {
+                    //System.out.println("this bits: " + this.bits[i] + " other bits: " + other.bits[i]);
                     count++;
                 }
             }
-            componentsEqual = count == this.bits.length ? true : false;
+            componentsEqual = count == this.bits.length;
         }
 
         return signsEqual && componentsEqual;
@@ -388,9 +453,8 @@ public class BigInt {
     @Override
     public String toString() {//does not account for sign yet
         if(sign == 0) {
-            return "0";
+            return binaryToDecimal(this.bits);
         }
         return sign == 1 ? "+" + binaryToDecimal(this.bits) : "-" + binaryToDecimal(this.bits);
-
     }
 }
