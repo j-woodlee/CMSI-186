@@ -21,6 +21,7 @@ public class BigIntTestHarness {
         test_AddOne();
         test_DoubleDecimalString();
         test_binaryToDecimal();
+        test_IsAbsValGreaterThan();
         
         // You should implement:
         //   test_isGreaterThan
@@ -38,6 +39,82 @@ public class BigIntTestHarness {
         successes += value ? 1 : 0;
 
         System.out.println(value ? "success" : "failure");
+    }
+
+    private static void test_IsAbsValGreaterThan() {
+        System.out.println("Testing IsAbsValGreaterThan...");
+        BigInt b1 = new BigInt("-1349814");
+        BigInt b2 = new BigInt("-189414");
+
+        try {
+            displaySuccessIfTrue(b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("1");
+
+        try {
+            displaySuccessIfTrue(!b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("-5");
+
+        try {
+            displaySuccessIfTrue(!b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("1313213");
+        b2 = new BigInt("34728748234234782374");
+
+        try {
+            displaySuccessIfTrue(!b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-11234124");
+        b2 = new BigInt("-5123471920342");
+
+        try {
+            displaySuccessIfTrue(!b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("0");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(!b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("-1");
+        b2 = new BigInt("0");
+
+        try {
+            displaySuccessIfTrue(b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        b1 = new BigInt("0");
+        b2 = new BigInt("1231927");
+
+        try {
+            displaySuccessIfTrue(!b1.isAbsValGreaterThan(b2));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
     }
 
     private static void test_Constructor() {
@@ -165,87 +242,127 @@ public class BigIntTestHarness {
     private static void test_Addition() {
         System.out.println("Testing addition...");
 
+        
+
         try {
             displaySuccessIfTrue(new BigInt("0").equals(new BigInt("0").plus(new BigInt("0"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        
 
         try {
             displaySuccessIfTrue(new BigInt("1").equals(new BigInt("0").plus(new BigInt("1"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        
 
         try {
             displaySuccessIfTrue(new BigInt("1").equals(new BigInt("1").plus(new BigInt("0"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        
 
         try {
             displaySuccessIfTrue(new BigInt("2").equals(new BigInt("1").plus(new BigInt("1"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        
 
         try {
             displaySuccessIfTrue(new BigInt("1000").equals(new BigInt("1").plus(new BigInt("999"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        
 
         try {
             displaySuccessIfTrue(new BigInt("1000").equals(new BigInt("123").plus(new BigInt("877"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
 
         try {
             displaySuccessIfTrue(new BigInt("-999").equals(new BigInt("-123").plus(new BigInt("-876"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
 
         try {
             displaySuccessIfTrue(new BigInt("-1000").equals(new BigInt("-123").plus(new BigInt("-877"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
+        System.out.println(new BigInt("+3000").plus(new BigInt("-4000")));
+
         try {
-            displaySuccessIfTrue(new BigInt("-1000").equals(new BigInt("+3000").plus(new BigInt("-4000"))));
+            displaySuccessIfTrue(new BigInt("-1000").equals(new BigInt("+3000").plus(new BigInt("-4000"))));//101110111000 + -111110100000
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        System.out.println(new BigInt("-4000").plus(new BigInt("+3000")));
 
         try {
             displaySuccessIfTrue(new BigInt("-1000").equals(new BigInt("-4000").plus(new BigInt("+3000"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        System.out.println(new BigInt("-1").plus(new BigInt("+1")));
 
         try {
             displaySuccessIfTrue(new BigInt("0").equals(new BigInt("-1").plus(new BigInt("+1"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        System.out.println(new BigInt("+1").plus(new BigInt("-1")));
 
         try {
             displaySuccessIfTrue(new BigInt("0").equals(new BigInt("+1").plus(new BigInt("-1"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        System.out.println(new BigInt("-1").plus(new BigInt("+11")));
 
         try {
             displaySuccessIfTrue(new BigInt("10").equals(new BigInt("-1").plus(new BigInt("+11"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
+
+        System.out.println(new BigInt("12").plus(new BigInt("-2")));
 
         try {
             displaySuccessIfTrue(new BigInt("10").equals(new BigInt("+12").plus(new BigInt("-2"))));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
@@ -253,6 +370,7 @@ public class BigIntTestHarness {
             BigInt x = new BigInt("+12354");
             displaySuccessIfTrue(new BigInt("24708").equals(x.plus(x)));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
@@ -260,6 +378,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(("+" + (new java.math.BigInteger("123456789123456789")))
                     .equals(new BigInt("123456789123456789").plus(new BigInt()).toString()));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
@@ -267,6 +386,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue("0".equals(new BigInt("123456789123456789")
                     .plus(new BigInt("-123456789123456789")).toString()));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
@@ -276,6 +396,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(("+" + expected).equals(new BigInt("2934097831972391728347612783641927841983569834695")
                     .plus(new BigInt("9234013274012419836418634983459547689126439817263478157836453178654")).toString()));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
@@ -285,6 +406,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(("+" + expected).equals(new BigInt("000123456789123456789")
                     .plus(new BigInt("000123456789123456789")).toString()));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
@@ -294,6 +416,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(expected.toString().equals(new BigInt("888888888888888888")
                     .plus(new BigInt("-999999999999999999")).toString()));
         } catch(Exception e) {
+            e.printStackTrace();
             displaySuccessIfTrue(false);
         }
 
