@@ -281,9 +281,6 @@ public class BigInt {
             return addend.plus(this);
         }
 
-        BigInt sum = new BigInt();
-        sum.bits = new boolean[this.bits.length + 1];
-
         boolean[] addendBits = new boolean[this.bits.length];
 
         for(int i = 0; i < addend.bits.length; i++) {
@@ -291,7 +288,9 @@ public class BigInt {
         }
         addend.bits = addendBits;
 
-        
+        BigInt sum = new BigInt();
+        sum.bits = new boolean[this.bits.length + 1];
+
         if((this.sign == addend.sign) || (this.sign == 0 && addend.sign == 1) || (addend.sign == 0 && this.sign == 1)) {//if both signs are zero, if both signs are positive, or if one of the signs is zero and the other ispositive
             //add algorithm
             boolean carry = false;
@@ -327,38 +326,67 @@ public class BigInt {
 
         } else {// if one of the signs is negative and one of them is positive
             //subtract algorithm, this - addend
-            sum.bits = new boolean[this.bits.length];
-            boolean borrowFrom1 = false;
-            boolean borrowFrom0 = false;
 
-            
+            if(this.isAbsValGreaterThan(addend)) {
+                sum.bits = new boolean[this.bits.length];
+                boolean top;
+                boolean borrow = false;
+                
+                for(int i = this.bits.length - 1; i >= 0; i--) {
+                    top = this.bits[i];
+                    if(borrow) {
+                        if(top) {//top == 1
+                            top = false;
+                            borrow = false;
+                        } else {
+                            top = true;
+                        }
+                    }
+                    if(!top && !addend.bits[i]) {//0 and 0
+                        sum.bits[i] = false;
+                    } else if(!top && addend.bits[i]) { //0 and 1
+                        sum.bits[i] = true;
+                        borrow = true;
+                    } else if(top && !addend.bits[i]) { // 1 and 0
+                        sum.bits[i] = true;
+                    } else if(top && addend.bits[i]) { // 1 and 1
+                        sum.bits[i] = false;
+                    }
+                }
+            } else if (addend.isAbsValGreaterThan(this)) {
+                sum = addend.plus(this);
+            } else {
+                return new BigInt();
+            }
+
             if(this.isGreaterThan(addend)) {
                 sum.sign = 1;
-                for(int i = this.bits.length - 1; i >= 0; i--) {
-                    for(int j = this.bits.length - 1; j >= 0; j--) {
-                        if(!this.bits[i] && !addend.bits[i]) {// 0 and 0
-                            
-                        } else if(this.bits[i] && !addend.bits[i]) {//1 and 0
-                            
-                        } else if(!this.bits[i] && addend.bits[i]) {//0 and 1
-                            
-                        } else if(this.bits[i] && addend.bits[i]) {//1 and 1
-                            
-                        }
-
-                    }
-                    
-                }
-            } else if (addend.isGreaterThan(this)) {
+            } else if(addend.isGreaterThan(this)) {
                 sum.sign = -1;
-
-            } else {
-                sum.sign = 0;
-                return new BigInt();
             }
         }
 
         return sum;
+    }
+
+    public boolean isAbsValGreaterThan(BigInt b) {
+        if((this.sign == 1 || this.sign == 0) && (this.sign == 0 || b.sign == 1)) {// 1 and 1
+            return this.isGreaterThan(b);
+        } else if(this.sign == -1 && (b.sign == 1 || b.sign == 0)) {// -1 and 1
+            BigInt thisCopy = new BigInt(this.toString());
+            thisCopy.sign = 1;
+            return thisCopy.isGreaterThan(b);
+        } else if((this.sign == 1 || this.sign == 0) && b.sign == -1) {// 1 and -1
+            BigInt bCopy = new BigInt(b.toString());
+            bCopy.sign = 1;
+            return this.isGreaterThan(bCopy);
+        } else {// sign of both == -1
+            BigInt thisCopy = new BigInt(this.toString());
+            BigInt bCopy = new BigInt(b.toString());
+            thisCopy.sign = 1;
+            bCopy.sign = 1;
+            return thisCopy.isGreaterThan(bCopy);
+        }
     }
 
     public BigInt minus(BigInt subtrahend) {
@@ -382,7 +410,6 @@ public class BigInt {
         boolean[][] column1 = new boolean[this.bits.length][];
         boolean[][] column2 = new boolean[this.bits.length][];
 
-        
         int factorLength = factor.bits.length;
         int thisLength = this.bits.length;
         for(int i = 0; i < this.bits.length; i++) {
@@ -451,9 +478,9 @@ public class BigInt {
     }
 
     @Override
-    public String toString() {//does not account for sign yet
+    public String toString() {
         if(sign == 0) {
-            return binaryToDecimal(this.bits);
+            return "0";
         }
         return sign == 1 ? "+" + binaryToDecimal(this.bits) : "-" + binaryToDecimal(this.bits);
     }
