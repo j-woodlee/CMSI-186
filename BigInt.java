@@ -286,7 +286,7 @@ public class BigInt {
         for(int i = 0; i < addend.bits.length; i++) {
             addendBits[(this.bits.length - addend.bits.length) + i] = addend.bits[i];
         }
-        addend.bits = addendBits;
+        //addend.bits = addendBits;
 
         BigInt sum = new BigInt();
         sum.bits = new boolean[this.bits.length + 1];
@@ -295,10 +295,10 @@ public class BigInt {
             //add algorithm
             boolean carry = false;
             for(int i = this.bits.length - 1; i >= 0; i--) {
-                if(!this.bits[i] && !addend.bits[i]) {// 0 and 0
+                if(!this.bits[i] && !addendBits[i]) {// 0 and 0
                     sum.bits[i + 1] = carry ? true : false;
                     carry = false;
-                } else if(this.bits[i] != addend.bits[i]) {//0 and 1
+                } else if(this.bits[i] != addendBits[i]) {//0 and 1
                     sum.bits[i + 1] = carry ? false : true;
                 } else {//1 and 1
                      sum.bits[i + 1] = carry ? true : false;
@@ -342,28 +342,48 @@ public class BigInt {
                             top = true;
                         }
                     }
-                    if(!top && !addend.bits[i]) {//0 and 0
+                    if(!top && !addendBits[i]) {//0 and 0
                         sum.bits[i] = false;
-                    } else if(!top && addend.bits[i]) { //0 and 1
+                    } else if(!top && addendBits[i]) { //0 and 1
                         sum.bits[i] = true;
                         borrow = true;
-                    } else if(top && !addend.bits[i]) { // 1 and 0
+                    } else if(top && !addendBits[i]) { // 1 and 0
                         sum.bits[i] = true;
-                    } else if(top && addend.bits[i]) { // 1 and 1
+                    } else if(top && addendBits[i]) { // 1 and 1
                         sum.bits[i] = false;
                     }
                 }
-            } else if (addend.isAbsValGreaterThan(this)) {
-                sum = addend.plus(this);
-            } else {
-                return new BigInt();
-            }
 
-            if(this.isGreaterThan(addend)) {
-                sum.sign = 1;
-            } else if(addend.isGreaterThan(this)) {
-                sum.sign = -1;
+                if(this.isGreaterThan(addend)) {
+                   sum.sign = 1;
+                } else if(addend.isGreaterThan(this)) {
+                   sum.sign = -1;
+                } 
+            } else if (addend.isAbsValGreaterThan(this)) {
+                return addend.plus(this);
+            } else {
+                sum.sign = 0;
             }
+        }
+
+        //need to get rid of false booleans in front of sum.bits
+
+        if(sum.sign != 0) {
+
+            int index = 0;
+            int numFalse = 0;
+            while(index < sum.bits.length && !sum.bits[index]) {
+                numFalse++;
+                index++;
+            }
+            boolean[] sumBits = new boolean[sum.bits.length - numFalse];
+
+            for(int i = 0; i < sumBits.length; i++) {
+                sumBits[i] = sum.bits[numFalse + i];
+            }
+            sum.bits = sumBits;
+        } else {
+            sum.bits = new boolean[1];
         }
 
         return sum;
