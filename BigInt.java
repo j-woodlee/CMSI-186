@@ -426,7 +426,8 @@ public class BigInt {
         BigInt product = new BigInt();
         if(this.sign == 0 || factor.sign == 0) {
             return product;
-        } 
+        }
+
         boolean[][] column1 = new boolean[this.bits.length][];
         boolean[][] column2 = new boolean[this.bits.length][];
 
@@ -441,7 +442,7 @@ public class BigInt {
             }
 
             for(int j = 0; j < thisLength; j++) {
-                column2[i][j] = this.bits[j];
+                column1[i][j] = this.bits[j];
             }
 
             factorLength++;
@@ -449,16 +450,16 @@ public class BigInt {
         }
 
         for(int i = 0; i < this.bits.length; i++) {
-            if(!column1[i][column1[i].length - 1]) {//number is even if last element is false
-                product = product.plus(new BigInt(binaryToDecimal(column1[i])).plus(new BigInt(binaryToDecimal(column2[i]))));
+            if(column1[i][column1[i].length - 1]) {//number is even if last element is false
+                product = product.plus(new BigInt(binaryToDecimal(column2[i])));
             }
         }
 
         if(this.sign == factor.sign) {
             product.sign = 1;
-            return product;
+        } else {
+            product.sign = -1;
         }
-        product.sign = -1;
         return product;
     }
 
