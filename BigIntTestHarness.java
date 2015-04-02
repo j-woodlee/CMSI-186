@@ -8,7 +8,6 @@ public class BigIntTestHarness {
         attempts = 0;
         successes = 0;
 
-        // Feel free to add more cases to these.
         test_Constructor();
         test_toString();
         test_Equals();
@@ -22,14 +21,10 @@ public class BigIntTestHarness {
         test_DoubleDecimalString();
         test_binaryToDecimal();
         test_IsAbsValGreaterThan();
-        
-        // You should implement:
-        //   test_isGreaterThan
-        //   test_isLessThan
-        //   test_Subtraction
-        //   test_Multiplication
-        //   test_IntegerDivision
-        //   test_Modulo
+        test_Multiplication();
+        test_Subtraction();
+        test_Division();
+        test_Modulo();
 
         System.out.println(successes + "/" + attempts + " tests passed.");
     }
@@ -39,6 +34,248 @@ public class BigIntTestHarness {
         successes += value ? 1 : 0;
 
         System.out.println(value ? "success" : "failure");
+    }
+
+    private static void test_Modulo() {
+        System.out.println("Testing mod...");
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("0").mod(new BigInt("1"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("-3").equals(new BigInt("-48").mod(new BigInt("5"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("3").equals(new BigInt("48").mod(new BigInt("-5"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("1").equals(new BigInt("1").mod(new BigInt("-2"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("1").equals(new BigInt("1").mod(new BigInt("2"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("3").equals(new BigInt("13").mod(new BigInt("5"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("-3").equals(new BigInt("-48").mod(new BigInt("-5"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            new BigInt("1234").mod(new BigInt());
+            displaySuccessIfTrue(false);
+        } catch(ArithmeticException ae) {
+            displaySuccessIfTrue(true);
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
+    private static void test_Division() {
+        System.out.println("Testing divide...");
+
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("0").div(new BigInt("1"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("0").div(new BigInt("119875091847509283475029384750293847502394857"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("10").equals(new BigInt("50").div(new BigInt("5"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("999").equals(new BigInt("999").div(new BigInt("1"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+
+
+        try {
+             displaySuccessIfTrue(new BigInt("-9").equals(new BigInt("-45").div(new BigInt("5"))));
+        } catch(Exception e) {
+             displaySuccessIfTrue(false);
+        }
+
+        try {
+             displaySuccessIfTrue(new BigInt("5274").equals(new BigInt("12348129341").div(new BigInt("2341234"))));
+        } catch(Exception e) {
+           displaySuccessIfTrue(false);
+        }
+
+        try {
+             displaySuccessIfTrue(new BigInt("-5274").equals(new BigInt("-12348129341").div(new BigInt("2341234"))));
+        } catch(Exception e) {
+           displaySuccessIfTrue(false);
+        }
+
+        try {
+             displaySuccessIfTrue(new BigInt("-5274").equals(new BigInt("12348129341").div(new BigInt("-2341234"))));
+        } catch(Exception e) {
+           displaySuccessIfTrue(false);
+        }
+
+        try {
+            new BigInt("134").div(new BigInt());
+            displaySuccessIfTrue(false);
+        } catch(ArithmeticException ae) {
+            displaySuccessIfTrue(true);
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+    }
+
+    private static void test_Subtraction() {
+        System.out.println("Testing minus...");
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("1").minus(new BigInt("1"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("998").equals(new BigInt("999").minus(new BigInt("1"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("-1").equals(new BigInt("99").minus(new BigInt("100"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("-100").equals(new BigInt("0").minus(new BigInt("100"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("453").equals(new BigInt("455").minus(new BigInt("2"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("1218142110").equals(new BigInt("1230491234").minus(new BigInt("12349124"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+    }
+
+    private static void test_Multiplication() {
+        System.out.println("Testing times...");
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("19").times(new BigInt("0"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("0").times(new BigInt("0"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("1").times(new BigInt("0"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+       
+
+        try {
+            displaySuccessIfTrue(new BigInt("100").equals(new BigInt("20").times(new BigInt("5"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        
+        try {
+            displaySuccessIfTrue(new BigInt("1000000").equals(new BigInt("1000").times(new BigInt("1000"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("36").equals(new BigInt("6").times(new BigInt("6"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("400").equals(new BigInt("20").times(new BigInt("20"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("-400").equals(new BigInt("-20").times(new BigInt("20"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("0").equals(new BigInt("-19").times(new BigInt("0"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("-100").equals(new BigInt("-10").times(new BigInt("10"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
+        try {
+            displaySuccessIfTrue(new BigInt("48").equals(new BigInt("12").times(new BigInt("4"))));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+            e.printStackTrace();
+        }
+
     }
 
     private static void test_IsAbsValGreaterThan() {
@@ -312,7 +549,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
 
-        System.out.println(new BigInt("+3000").plus(new BigInt("-4000")));
+        
 
         try {
             displaySuccessIfTrue(new BigInt("-1000").equals(new BigInt("+3000").plus(new BigInt("-4000"))));//101110111000 + -111110100000
@@ -321,7 +558,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
 
-        System.out.println(new BigInt("-4000").plus(new BigInt("+3000")));
+        
 
         try {
             displaySuccessIfTrue(new BigInt("-1000").equals(new BigInt("-4000").plus(new BigInt("+3000"))));
@@ -330,7 +567,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
 
-        System.out.println(new BigInt("-1").plus(new BigInt("+1")));
+        
 
         try {
             displaySuccessIfTrue(new BigInt("0").equals(new BigInt("-1").plus(new BigInt("+1"))));
@@ -339,7 +576,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
 
-        System.out.println(new BigInt("+1").plus(new BigInt("-1")));
+        
 
         try {
             displaySuccessIfTrue(new BigInt("0").equals(new BigInt("+1").plus(new BigInt("-1"))));
@@ -348,7 +585,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
 
-        System.out.println(new BigInt("-1").plus(new BigInt("+11")));
+        
 
         try {
             displaySuccessIfTrue(new BigInt("10").equals(new BigInt("-1").plus(new BigInt("+11"))));
@@ -357,7 +594,7 @@ public class BigIntTestHarness {
             displaySuccessIfTrue(false);
         }
 
-        System.out.println(new BigInt("12").plus(new BigInt("-2")));
+        
 
         try {
             displaySuccessIfTrue(new BigInt("10").equals(new BigInt("+12").plus(new BigInt("-2"))));
@@ -653,6 +890,103 @@ public class BigIntTestHarness {
         } catch(Exception e) {
             displaySuccessIfTrue(false);
         }
+
+        s = "909";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("910"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "109";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("110"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "209";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("210"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "1009";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("1010"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "123123909";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("123123910"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "34909";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("34910"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "1249094239";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("1249094240"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "9091249094249";
+        
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("9091249094250"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "1299099";
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("1299100"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "9000009";
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("9000010"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
+        s = "91231239";
+
+        try {
+            displaySuccessIfTrue(BigInt.addOne(s).equals("91231240"));
+        } catch(Exception e) {
+            displaySuccessIfTrue(false);
+        }
+
 
     }
 
