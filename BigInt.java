@@ -1,4 +1,3 @@
-import java.math.BigInteger;
 
 public class BigInt {
     boolean[] bits;//true = 1, false = 0, binary representation
@@ -454,11 +453,7 @@ public class BigInt {
     }
 
     public BigInt mod(BigInt divisor) {
-        if(divisor.sign == 0) {
-            throw new ArithmeticException();
-        }
-
-        return new BigInt();
+        return this.minus(divisor.times(this.div(divisor)));
     }
 
     public BigInt times(BigInt factor) {//precondition: this.bits[0] and factor.bits[0] is always true
