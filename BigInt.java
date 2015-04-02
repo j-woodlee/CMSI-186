@@ -7,7 +7,7 @@ public class BigInt {
         this("0");
     }
 
-    public BigInt(String number) {//remember to deal with edge cases
+    public BigInt(String number) {
 
         number = number.replaceAll("\\s+","");// replace all blank spaces with an empty string, from http://stackoverflow.com/questions/13209866/java-replace-method-replacing-with-empty-character
         number = removeExtraZeroes(number);//remove unnecessary zeroes from the number(zeroes in the front)
@@ -25,6 +25,10 @@ public class BigInt {
         }
 
         bits = BigInt.decimalToBinary(number);
+
+        if(!this.bits[0]) {//dealing with edge cases
+            this.sign = 0;
+        }
     }
 
     public static boolean[] decimalToBinary(String decNum) {
@@ -287,13 +291,12 @@ public class BigInt {
         for(int i = 0; i < addend.bits.length; i++) {
             addendBits[(this.bits.length - addend.bits.length) + i] = addend.bits[i];
         }
-        //addend.bits = addendBits;
+        
 
         BigInt sum = new BigInt();
         sum.bits = new boolean[this.bits.length + 1];
 
-        if((this.sign == addend.sign) || (this.sign == 0 && addend.sign == 1) || (addend.sign == 0 && this.sign == 1)) {//if both signs are zero, if both signs are positive, or if one of the signs is zero and the other ispositive
-            //add algorithm
+        if((this.sign == addend.sign) || (this.sign == 0 && addend.sign == 1) || (addend.sign == 0 && this.sign == 1)) {//if both signs are zero, if both signs are positive, or if one of the signs is zero and the other is positive
             boolean carry = false;
             for(int i = this.bits.length - 1; i >= 0; i--) {
                 if(!this.bits[i] && !addendBits[i]) {// 0 and 0
@@ -456,7 +459,7 @@ public class BigInt {
         return this.minus(divisor.times(this.div(divisor)));
     }
 
-    public BigInt times(BigInt factor) {//precondition: this.bits[0] and factor.bits[0] is always true
+    public BigInt times(BigInt factor) {
         BigInt product = new BigInt();
         if(this.sign == 0 || factor.sign == 0) {
             return product;
@@ -522,7 +525,7 @@ public class BigInt {
         if (this.bits.length == other.bits.length) {
             for(int i = 0; i < this.bits.length; i++) {
                 if(this.bits[i] == other.bits[i]) {
-                    //System.out.println("this bits: " + this.bits[i] + " other bits: " + other.bits[i]);
+                    
                     count++;
                 }
             }
