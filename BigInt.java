@@ -194,8 +194,10 @@ public class BigInt {
             for(int i = s.length()-1; i >= 0; i--) {
                 if(s.substring(i,i+1).equals("9")) {
                     count--;//by the end of this loop count is the index of the nine furthest in from the right, example: in 34999 count would be 2 at the end of the loop 1999999
+                } else {
+                    break;
                 }
-            }//s.length() - count  is the number of 9's
+            }//s.length() - count  is the number of 9's on the right
 
             String endZeroes = "";
 
@@ -213,7 +215,7 @@ public class BigInt {
                 s = s.substring(0, count-1) + plusOneDigit + endZeroes;
             }
 
-           }
+        }
            return s;
     }
 
@@ -410,16 +412,53 @@ public class BigInt {
     }
 
     public BigInt minus(BigInt subtrahend) {
-        subtrahend.sign *= -1;
-        return this.plus(subtrahend);
+        BigInt subtrahendCopy = new BigInt(subtrahend.toString());
+        subtrahendCopy.sign *= -1;
+        return this.plus(subtrahendCopy);
     }
 
-    public BigInt div(BigInt divisor) {
-        throw new UnsupportedOperationException();
+    public BigInt div(BigInt divisor) {//divisor == number on bottom
+        if(this.sign == 0) {
+            return new BigInt();
+        } else if(divisor.sign == 0) {
+            throw new ArithmeticException();
+        } else if(divisor.isAbsValGreaterThan(this)) {// < 1 means div returns zero
+            return new BigInt();
+        }
+
+        BigInt quotient = new BigInt();
+        BigInt difference = new BigInt(this.toString());
+        difference.sign = 1;
+        
+        BigInt divisorCopy = new BigInt(divisor.toString());
+        
+        divisorCopy.sign = 1;
+        String decimalQuotient = "0";
+
+        while(difference.isGreaterThan(divisorCopy) || difference.equals(divisorCopy)) {//greater than or equal to
+            difference = difference.minus(divisorCopy);
+            //System.out.println("difference: " + difference + " decimalQuotient: " +  decimalQuotient);
+            decimalQuotient = addOne(decimalQuotient);//decimalQuotient++
+        }
+
+        quotient.bits = decimalToBinary(decimalQuotient);
+
+        if(this.sign == divisor.sign) {
+            quotient.sign = 1;
+        } else {
+            quotient.sign = -1;
+        }
+
+        return quotient;
+
     }
 
     public BigInt mod(BigInt divisor) {
-        throw new UnsupportedOperationException();
+        if(divisor.sign == 0) {
+            throw new ArithmeticException();
+        }
+
+        return new BigInt();
     }
 
     public BigInt times(BigInt factor) {//precondition: this.bits[0] and factor.bits[0] is always true
