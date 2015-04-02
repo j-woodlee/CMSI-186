@@ -1,8 +1,8 @@
 
 public class BigFib {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        int iterations = 100;
+        int iterations = Integer.parseInt(args[0]);
 
         BigInt num1 = new BigInt("0");
         BigInt num2 = new BigInt("1");
