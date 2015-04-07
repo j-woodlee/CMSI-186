@@ -1,4 +1,3 @@
-
 public class BigInt {
     boolean[] bits;//true = 1, false = 0, binary representation
     short sign;//-1, 0, 1
