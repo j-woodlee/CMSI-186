@@ -1,14 +1,18 @@
 public class MonteCarloIntegrator {
-    private Dart[] darts;
-    private double lowerRange;
-    private double upperRange;
+    private int numDarts;
+    private double lowerRangeX;
+    private double upperRangeX;
+    private double lowerRangeY;
+    private double upperRangeY;
     private double[] coefficients;
 
-    public MonteCarloIntegrator(int numDarts, double lowerRange, double upperRange, double[] coefficients) {
-        darts = new Dart[numDarts];
-        this.lowerRange = lowerRange;
-        this.upperRange = upperRange;
+    public MonteCarloIntegrator(int numDarts, double lowerRangeX, double upperRangeX, double[] coefficients) {
+        this.numDarts = numDarts;
         this.coefficients = coefficients;
+        this.lowerRangeX = lowerRangeX;
+        this.upperRangeX = upperRangeX;
+        this.lowerRangeY = this.findMin();
+        this.upperRangeY = this.findMax();
     }
 
     public static void usage() {
@@ -17,17 +21,18 @@ public class MonteCarloIntegrator {
 
     public static void main(String[] args) {
 
-        double[] arguments;
+        double[] arguments = new double[0];
 
         try {
-            arguments = new double[(args[args.length - 1].startsWith("total=")) ? args.length - 1 : args.length - 2];//arguments.length is args.length - 2 if there is no total= at the end
+             arguments = new double[(args[args.length - 1].startsWith("total")) ? args.length - 1 : args.length];
+
         } catch(ArrayIndexOutOfBoundsException aioobe) {
             usage();
             return;
         }
        
         try {
-            int numDarts = arguments.length == args.length - 2 ? 10000 : Integer.parseInt(args[args.length - 1].substring(6,args[args.length - 1].length()));
+            int numDarts = !args[args.length - 1].startsWith("total=") ? 10000 : Integer.parseInt(args[args.length - 1].substring(6,args[args.length - 1].length()));
 
             for(int i = 0; i < arguments.length - 1; i++) {
                 arguments[i] = Double.parseDouble(args[i+1]);
@@ -54,6 +59,9 @@ public class MonteCarloIntegrator {
             for(int i = arguments.length - 4; i >= 0; i--) {
                 function[i] = arguments[i];
             }
+        } else {
+            usage();
+            return;
         }
 
         for(double d : function) {
@@ -61,7 +69,29 @@ public class MonteCarloIntegrator {
         }
 
         MonteCarloIntegrator mci = new MonteCarloIntegrator((int)arguments[arguments.length - 1], arguments[arguments.length - 3], arguments[arguments.length - 2], function);
-        System.out.println(mci.f(89));
+
+
+        System.out.println("Estimating maximum and minimum...");
+        System.out.println("Minimum in range: " + mci.lowerRangeY);
+        System.out.println("Maximum in range: " + mci.upperRangeY);
+        System.out.println("Final lower bound: " + (mci.upperRangeY - (mci.upperRangeY * 1.1)));
+        System.out.println("Final upper bound: " + (mci.upperRangeY + (mci.upperRangeY * .1)));
+        System.out.println("start");
+
+        Dart d;
+
+        int hits = 0;
+        for(int i = 0; i < mci.numDarts; i++) {
+            d = new Dart(mci);
+            System.out.println(d + " " + (d.underFunction(mci) ? "in" : "out"));
+            if(d.underFunction(mci)) {
+                hits++;
+            }
+        }
+
+        System.out.println("end");
+
+        System.out.println("Estimate: ");
     }
 
     public double f(double x) {
@@ -75,19 +105,38 @@ public class MonteCarloIntegrator {
     }
 
     public double findMax() {//returns y value of the maximum
-        return 1.0;
+        double max = f(lowerRangeX);
+        for(double i = lowerRangeX; i <= upperRangeX; i += (upperRangeX - lowerRangeX) / 1000000) {
+            if(f(i) > max) {
+                max = f(i);
+            }
+        }
+        return max;
     }
 
     public double findMin() {//returns y value of the minimum
-        return 1.0;
+        double min = f(lowerRangeX);
+        for(double i = lowerRangeX; i <= upperRangeX; i += (upperRangeX - lowerRangeX) / 1000000) {
+            if(f(i) < min) {
+                min = f(i);
+            }
+        }
+        return min;
     }
 
-    public double getLowerRange() {
-        return lowerRange;
+    public double getLowerRangeX() {
+        return lowerRangeX;
     }
 
-    public double getUpperRange() {
-        return upperRange;
+    public double getUpperRangeX() {
+        return upperRangeX;
     }
 
+    public double getUpperRangeY() {
+        return upperRangeY;
+    }
+
+    public double getLowerRangeY() {
+        return lowerRangeY;
+    }
 }
