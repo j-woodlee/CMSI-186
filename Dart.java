@@ -11,10 +11,10 @@ public class Dart {
 
     public Dart(MonteCarloIntegrator mci) {//http://stackoverflow.com/questions/5271598/java-generate-random-number-between-two-given-values
         Random r = new Random();
-        double xMax = mci.getUpperRange();
-        double xMin = mci.getLowerRange();
-        double yMax = mci.findMax() + (0.1 * mci.findMax());
-        double yMin = mci.findMin() - (0.1 * mci.findMin());
+        double xMax = mci.getUpperRangeX();
+        double xMin = mci.getLowerRangeX();
+        double yMax = mci.getUpperRangeY() + (0.1 * mci.getUpperRangeY());
+        double yMin = mci.getUpperRangeY() - (mci.getUpperRangeY() * 1.1);
         this.x = xMin + (xMax - xMin) * r.nextDouble();
         this.y = yMin + (yMax - yMin) * r.nextDouble();
     }
@@ -30,11 +30,12 @@ public class Dart {
     }
 
     public boolean underFunction(MonteCarloIntegrator mci) {
-        if(mci.f(x) > 0 && y > 0 && mci.f(x) >= y) {
+        double fx = mci.f(x);
+        if(fx > 0 && y > 0 && fx >= y) {
             return true;
-        } else if(mci.f(x) < 0 && y < 0 && mci.f(x) <= y) {
+        } else if(fx < 0 && y < 0 && fx <= y) {
             return true;
-        } else if (mci.f(x) == 0 && y == 0){
+        } else if (fx == 0 && y == 0){
             return true;
         }
         return false;
@@ -50,6 +51,6 @@ public class Dart {
 
     @Override
     public String toString() {
-        return x + ", " + y;
+        return x + " " + y;
     }
 }
