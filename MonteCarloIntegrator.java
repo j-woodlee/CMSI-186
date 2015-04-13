@@ -80,18 +80,32 @@ public class MonteCarloIntegrator {
 
         Dart d;
 
-        int hits = 0;
+        int hitsAbove = 0;
+        int hitsBelow = 0;
         for(int i = 0; i < mci.numDarts; i++) {
             d = new Dart(mci);
             System.out.println(d + " " + (d.underFunction(mci) ? "in" : "out"));
-            if(d.underFunction(mci)) {
-                hits++;
+            if(d.underFunction(mci) && d.y() < 0) {
+                hitsBelow++;
+            } else if(d.underFunction(mci) && d.y() > 0) {
+                hitsAbove++;
+            } else if(d.underFunction(mci) && d.y() == 0) {
+                hitsAbove++;
             }
         }
 
         System.out.println("end");
 
-        System.out.println("Estimate: ");
+        
+
+        
+
+        double areaRect = (mci.upperRangeX - mci.lowerRangeX) * ((mci.upperRangeY + (mci.upperRangeY * .1)) - (mci.upperRangeY - (mci.upperRangeY * 1.1)));
+
+        double aboveXAxis = areaRect*((double)hitsAbove)/(double)mci.numDarts;
+        double belowXAxis = areaRect*((double)hitsBelow)/(double)mci.numDarts;
+
+        System.out.println("Estimate: " + (aboveXAxis - belowXAxis));
     }
 
     public double f(double x) {
