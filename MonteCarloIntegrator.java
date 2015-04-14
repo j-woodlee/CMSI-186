@@ -97,9 +97,6 @@ public class MonteCarloIntegrator {
         System.out.println("end");
 
         
-
-        
-
         double areaRect = (mci.upperRangeX - mci.lowerRangeX) * ((mci.upperRangeY + (mci.upperRangeY * .1)) - (mci.upperRangeY - (mci.upperRangeY * 1.1)));
 
         double aboveXAxis = areaRect*((double)hitsAbove)/(double)mci.numDarts;
