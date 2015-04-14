@@ -13,8 +13,23 @@ public class Dart {
         Random r = new Random();
         double xMax = mci.getUpperRangeX();
         double xMin = mci.getLowerRangeX();
-        double yMax = mci.getUpperRangeY() + (0.1 * mci.getUpperRangeY());
-        double yMin = mci.getUpperRangeY() - (mci.getUpperRangeY() * 1.1);
+        double yMax = mci.getUpperRangeY();
+        double yMin = mci.getUpperRangeY();
+
+
+        if(yMin > 0) {
+            yMin = 0;
+        }
+
+        if(yMax < 0) {
+            yMax = 0;
+        }
+
+        double range = yMax - yMin;
+
+        yMax = yMax + range*.1;
+        yMin = yMin - range*.1;
+
         this.x = xMin + (xMax - xMin) * r.nextDouble();
         this.y = yMin + (yMax - yMin) * r.nextDouble();
     }
