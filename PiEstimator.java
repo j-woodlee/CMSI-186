@@ -15,17 +15,17 @@ public class PiEstimator {
                 p = new PiEstimator(Integer.parseInt(args[0]));
             }
         } catch(NumberFormatException nfe) {
-            System.out.println("Must enter a number. Default value of 10,000 entered.");
+            System.out.println("Usage: <Number of darts, an Integer>");
+            return;
         }
         
-
         System.out.println("start");
         int hits = 0;
 
 
         for(int i = 0; i < p.numDarts; i++) {
-            System.out.println(p.throwDart() + (p.d.onBoard() ? "in" : "out"));
-            if(p.d.onBoard()) {
+            System.out.println(p.throwDart() + (p.d.onUnitCircle() ? "in" : "out"));
+            if(p.d.onUnitCircle()) {
                 hits++;
             }
         }
