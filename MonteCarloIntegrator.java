@@ -16,7 +16,10 @@ public class MonteCarloIntegrator {
     }
 
     public static void usage() {
-        System.out.println("Usage: <Type of Function> <Zero or more arguments go here, depending on the type of function> <lower bound of range of estimation> <upper bound of range of estimation> <optional total= number of darts, must include 'total='>");
+        
+        System.out.println("Usage: java MonteCarloIntegrator <function type> <constants>... <x minimum> <x maximum> <optional dart total>");
+        System.out.println("Supported function types: poly: constants should be coefficients of x^n-1 to x^0 for n constants");
+        System.out.println("Dart total should be preceded by 'total=' ");
     }
 
     public static void main(String[] args) {
