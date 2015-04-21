@@ -58,7 +58,57 @@ public class MakeOptimalChange {
         }
     }
 
-    
+    public static Tally makeOptimalChangeRecursively(int[] denominations, int amount) {
+        Tally[][] tallyTable = new Tally[denominations.length][amount + 1];
+
+        for(int i = 0; i < denominations.length; i++) {//fill in zeroes
+            tallyTable[i][0] = new Tally(denominations.length);
+        }
+
+        return getTallyAt(denominations.length, amount, denominations, tallyTable);        
+    }
+
+    public static Tally getTallyAt(int i, int j, int[] denominations, Tally[][] tallyTable) {
+                if(j >= denominations[i]) {
+                    Tally t = new Tally(denominations.length);//prime new Tally 
+                    t.setElement(i,1);
+                    Tally difference = getTallyAt(i, j - denominations[i], denominations, tallyTable);
+
+                    if (i == 0) {
+
+//if (j == 25) {
+   // System.out.println("at " + i + " , " + j + ": " + difference);
+    //System.out.println("at " + i + " , " + j + ": " + tallyTable[0][0]);
+///}
+
+                        if(difference.isImpossible()) {
+                            t = Tally.IMPOSSIBLE;
+                        } else {
+                            t = t.add(difference);
+                        }
+                    } else {
+                        Tally cameBefore = getTallyAt(i - 1, j, denominations, tallyTable);
+                        if(difference.isImpossible()) {
+                            t = cameBefore;
+                        } else {
+                            t = t.add(difference);
+                        }
+                        if(!cameBefore.isImpossible() && t.total() > cameBefore.total()) {
+                            t = cameBefore;
+                        }
+                    }
+
+                    tallyTable[i][j] = t;
+                } else {
+                    if(i > 0) {
+                        tallyTable[i][j] = getTallyAt(i - 1, j, denominations, tallyTable);
+                    } else {
+                        tallyTable[i][j] = Tally.IMPOSSIBLE;
+                    }     
+                }
+
+                        return tallyTable[i][j];
+    }
 
     public static Tally makeOptimalChange(int[] denominations, int amount) {
         Tally[][] tallyTable = new Tally[denominations.length][amount + 1];
