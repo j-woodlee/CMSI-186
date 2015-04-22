@@ -10,6 +10,7 @@ public class MakeOptimalChangeTestHarness {
         test_USA();
         test_Canada();
         test_JakeUniverse();
+        //System.out.println("Start recursive tests.");
         //test_USARecursive();
         // Add more!
 
@@ -31,7 +32,7 @@ public class MakeOptimalChangeTestHarness {
         int[] usaDenominations = new int[] { 25, 10, 5, 1 };
 
         Tally result = MakeOptimalChange.makeOptimalChangeRecursively(usaDenominations, 99);
-        //System.out.println(result);
+        System.out.println(result);
         try {
             displaySuccessIfTrue(3 == result.getElement(0));
         } catch (Exception e) {
@@ -311,6 +312,25 @@ public class MakeOptimalChangeTestHarness {
 
         try {
             displaySuccessIfTrue(3 == result.getElement(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayFailure();
+        }
+
+        jakeDenominations = new int[] {10,4};
+        result = MakeOptimalChange.makeOptimalChange(jakeDenominations, 84);
+
+        //System.out.println(result);
+
+        try {
+            displaySuccessIfTrue(8 == result.getElement(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayFailure();
+        }
+
+        try {
+            displaySuccessIfTrue(1 == result.getElement(1));
         } catch (Exception e) {
             e.printStackTrace();
             displayFailure();
