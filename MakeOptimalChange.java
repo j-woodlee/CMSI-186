@@ -65,7 +65,7 @@ public class MakeOptimalChange {
             tallyTable[i][0] = new Tally(denominations.length);
         }
 
-        return getTallyAt(denominations.length, amount, denominations, tallyTable);        
+        return getTallyAt(denominations.length - 1, amount, denominations, tallyTable);
     }
 
     public static Tally getTallyAt(int i, int j, int[] denominations, Tally[][] tallyTable) {
@@ -75,11 +75,6 @@ public class MakeOptimalChange {
                     Tally difference = getTallyAt(i, j - denominations[i], denominations, tallyTable);
 
                     if (i == 0) {
-
-//if (j == 25) {
-   // System.out.println("at " + i + " , " + j + ": " + difference);
-    //System.out.println("at " + i + " , " + j + ": " + tallyTable[0][0]);
-///}
 
                         if(difference.isImpossible()) {
                             t = Tally.IMPOSSIBLE;
@@ -99,15 +94,15 @@ public class MakeOptimalChange {
                     }
 
                     tallyTable[i][j] = t;
+
                 } else {
                     if(i > 0) {
                         tallyTable[i][j] = getTallyAt(i - 1, j, denominations, tallyTable);
                     } else {
                         tallyTable[i][j] = Tally.IMPOSSIBLE;
-                    }     
+                    }
                 }
-
-                        return tallyTable[i][j];
+        return tallyTable[i][j];
     }
 
     public static Tally makeOptimalChange(int[] denominations, int amount) {
@@ -125,11 +120,6 @@ public class MakeOptimalChange {
                     Tally difference = tallyTable[i][j-denominations[i]];
 
                     if (i == 0) {
-
-//if (j == 25) {
-   // System.out.println("at " + i + " , " + j + ": " + difference);
-    //System.out.println("at " + i + " , " + j + ": " + tallyTable[0][0]);
-///}
 
                         if(difference.isImpossible()) {
                             t = Tally.IMPOSSIBLE;
@@ -158,12 +148,6 @@ public class MakeOptimalChange {
                 }
             }
         }
-
-        //for(int i = 0; i < denominations.length; i++) {
-          //  for(int j = 0; j < tallyTable[i].length; j++) {
-             //   System.out.println(tallyTable[i][j]);
-           // }
-        //}
 
         return tallyTable[denominations.length - 1][amount];
 
