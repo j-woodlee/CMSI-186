@@ -87,11 +87,11 @@ public class MazeWalker {
        
         int numValidLocations = numValidLocations(validAdjacentLocations);
 
-        if(numValidLocations == 1) {//if there is only one adjacent legal cell
-            path[pathIndex + 1] = path[pathIndex];
-            pathIndex++;
-            return path[pathIndex];
-        } else if(numValidLocations > 1) {//if there are multiple adjacent legal cells
+        // if(numValidLocations == 1) {//if there is only one adjacent legal cell
+        //     path[pathIndex + 1] = path[pathIndex];
+        //     pathIndex++;
+        //     return path[pathIndex];
+        if(numValidLocations > 0) {//if there are multiple adjacent legal cells
             //return the direction of one of them
             pathIndex++;
             if(validAdjacentLocations[0] != null) {
@@ -116,8 +116,8 @@ public class MazeWalker {
             }
 
         } else {//if there are no legal cells, go back one
-            //pathIndex--;
-            return WalkerState.THERE_ALREADY;
+            //path[pathIndex] = ;
+            return getOppositeDirection();
         }
         //return WalkerState.MOVE_RIGHT;
     }
