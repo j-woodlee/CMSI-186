@@ -77,7 +77,7 @@ public class MazeWalker {
             //look around adjacent squares
             //
         beenThere[currentY][currentX] = true;
-        if(currentX == destinationX && currentY == destinationY) {
+        if (currentX == destinationX && currentY == destinationY) {
             return WalkerState.THERE_ALREADY;
         }
 
@@ -87,43 +87,41 @@ public class MazeWalker {
        
         int numValidLocations = numValidLocations(validAdjacentLocations);
 
-        // if(numValidLocations == 1) {//if there is only one adjacent legal cell
-        //     path[pathIndex + 1] = path[pathIndex];
-        //     pathIndex++;
-        //     return path[pathIndex];
-        if(numValidLocations > 0) {//if there are multiple adjacent legal cells
+        if (numValidLocations > 0) {//if there are multiple adjacent legal cells
             //return the direction of one of them
             pathIndex++;
-            if(validAdjacentLocations[0] != null) {
+            if (validAdjacentLocations[0] != null) {
 
                 path[pathIndex] = WalkerState.MOVE_UP;
                 return WalkerState.MOVE_UP;
 
-            } else if(validAdjacentLocations[1] != null) {
+            } else if (validAdjacentLocations[1] != null) {
 
                 path[pathIndex] = WalkerState.MOVE_DOWN;
                 return WalkerState.MOVE_DOWN;
 
-            } else if(validAdjacentLocations[2] != null) {
+            } else if (validAdjacentLocations[2] != null) {
 
                 path[pathIndex] = WalkerState.MOVE_RIGHT;
                 return WalkerState.MOVE_RIGHT;
 
             } else {
-
                 path[pathIndex] = WalkerState.MOVE_LEFT;
                 return WalkerState.MOVE_LEFT;
             }
 
         } else {//if there are no legal cells, go back one
-            //path[pathIndex] = ;
+            if (pathIndex == -1) {
+                return WalkerState.IMPOSSIBLE_TO_GET_THERE;
+            }
+            pathIndex--;
             return getOppositeDirection();
         }
         //return WalkerState.MOVE_RIGHT;
     }
 
     public WalkerState getOppositeDirection() {
-        WalkerState currentState = path[pathIndex];
+        WalkerState currentState = path[pathIndex + 1];
 
         if(currentState == WalkerState.MOVE_RIGHT) {
             return WalkerState.MOVE_LEFT;
